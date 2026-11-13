@@ -528,26 +528,22 @@ function selectSceneEffect(sceneId, effectName) {
   applySceneEffectToMockup(sceneId, effectName);
 
   // 3. 同步联动颜色选择中的光环预设选中态（单色 vs 彩色 vs 四色）
-  ['main', 'incall'].forEach(subKey => {
-    const boxId = `${sceneId}_${subKey}`;
-    const presetsRow = document.getElementById(`colorPresets_${boxId}`);
-    if (presetsRow) {
-      if (effectName === 'color_rhythm') {
-        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
-        const rainbowBtn = presetsRow.querySelector('.color-ring-btn.ring-rainbow');
-        if (rainbowBtn) rainbowBtn.classList.add('active');
-      } else if (effectName === 'four_color') {
-        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
-        const fourBtn = presetsRow.querySelector('.color-ring-btn.ring-four-color');
-        if (fourBtn) fourBtn.classList.add('active');
-      } else {
-        const curColor = subKey === 'incall' ? scData.inCallColor : scData.color;
-        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-color') === curColor);
-        });
-      }
+  const presetsRow = document.getElementById(`colorPresets_${sceneId}_main`);
+  if (presetsRow) {
+    if (effectName === 'color_rhythm') {
+      presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
+      const rainbowBtn = presetsRow.querySelector('.color-ring-btn.ring-rainbow');
+      if (rainbowBtn) rainbowBtn.classList.add('active');
+    } else if (effectName === 'four_color') {
+      presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
+      const fourBtn = presetsRow.querySelector('.color-ring-btn.ring-four-color');
+      if (fourBtn) fourBtn.classList.add('active');
+    } else {
+      presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-color') === scData.color);
+      });
     }
-  });
+  }
 
   // 4. 更新提示文案
   const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
@@ -850,6 +846,17 @@ function toggleSceneSwitch(sceneId, checked) {
       mockup.classList.remove('fx-off');
       if (mockupImg) mockupImg.src = './assets/device_clean.png';
       applySceneEffectToMockup(sceneId, scData.effect);
+    }
+  }
+
+  // 若为来电场景，当来电开关关闭时禁用通话中呼吸
+  if (sceneId === 'call') {
+    const inCallSw = document.getElementById('switch_inCallBreathe');
+    const inCallRow = document.getElementById('row_inCallBreathe');
+    if (inCallSw) inCallSw.disabled = !checked;
+    if (inCallRow) {
+      inCallRow.style.opacity = checked ? '1' : '0.4';
+      inCallRow.style.pointerEvents = checked ? 'auto' : 'none';
     }
   }
 }

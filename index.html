@@ -216,11 +216,19 @@
             </div>
           </div>
         </section>
-        <section class="settings-card">
+        <section class="settings-card" id="card_call_toggle">
           <div class="setting-row">
             <span class="setting-label" data-i18n="scene_call">来电</span>
             <label class="switch-toggle">
               <input type="checkbox" id="switch_call" checked onchange="toggleSceneSwitch('call', this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-divider"></div>
+          <div class="setting-row" id="row_inCallBreathe">
+            <span class="setting-label" data-i18n="in_call_breathing">通话中呼吸</span>
+            <label class="switch-toggle">
+              <input type="checkbox" id="switch_inCallBreathe" checked onchange="toggleInCallBreathe(this.checked)">
               <span class="toggle-slider"></span>
             </label>
           </div>
@@ -323,44 +331,7 @@
           </div>
         </section>
 
-        <!-- 卡片三：通话中呼吸及专属颜色 -->
-        <section class="settings-card">
-          <div class="setting-row">
-            <span class="setting-label" data-i18n="in_call_breathing">通话中呼吸</span>
-            <label class="switch-toggle">
-              <input type="checkbox" id="switch_inCallBreathe" checked onchange="toggleInCallBreathe(this.checked)">
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="setting-divider"></div>
-          <div class="color-module-wrapper">
-            <div class="section-title-row">
-              <span class="setting-label" data-i18n="color_select">颜色选择</span>
-              <span class="current-color-hint" id="colorHint_call_incall" data-i18n="color_dark_green">深绿</span>
-            </div>
 
-            <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
-            <div class="color-presets-row" id="colorPresets_call_incall">
-              <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('call', '#00e600', 'color_grass_green', 'incall')" aria-label="绿色"></button>
-              <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('call', '#ffa850', 'color_peach_orange', 'incall')" aria-label="橙色"></button>
-              <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('call', '#4ca8ff', 'color_fog_blue', 'incall')" aria-label="蓝色"></button>
-              <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('call', '#00f5e6', 'color_cyan_blue', 'incall')" aria-label="青色"></button>
-              <div class="color-preset-divider"></div>
-              <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('call', 'rainbow', 'incall')" aria-label="彩色律动"></button>
-              <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('call', 'four_color', 'incall')" aria-label="四色律动"></button>
-            </div>
-
-            <!-- 全彩拾色大圆盘 -->
-            <div class="color-wheel-wrapper">
-              <div class="color-wheel-box" id="colorWheel_call_incall" onclick="pickSceneWheelColor(event, 'call', 'incall')">
-                <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
-                <div class="wheel-picker-thumb" id="wheelThumb_call_incall" style="left: 35%; top: 90%;">
-                  <span class="thumb-core" id="thumbCore_call_incall" style="background-color: #00e600;"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
       <!-- 场景视图 3: 通知 (Notification) -->
