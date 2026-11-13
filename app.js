@@ -15,7 +15,7 @@ const I18N_LOCALES = {
     magic_pulse_hint: '在低电量、省电模式、勿扰模式、睡眠模式下幻彩脉动功能不可用',
     active_time: '启用时段',
     active_time_all_day: '全天启用',
-    brightness: '亮度',
+    brightness: '亮度调节',
     scene_party: '派对',
     scene_call: '来电',
     scene_notification: '通知',
@@ -721,6 +721,16 @@ function setGlobalBrightness(val) {
   state.globalBrightness = parseInt(val, 10);
   document.documentElement.style.setProperty('--device-halo-brightness', state.globalBrightness / 100);
   document.documentElement.style.setProperty('--brightness-pct', `${state.globalBrightness}%`);
+
+  const valElem = document.getElementById('homeBrightnessVal');
+  if (valElem) valElem.textContent = `${state.globalBrightness}%`;
+
+  const slider = document.getElementById('homeBrightnessSlider');
+  if (slider) {
+    slider.value = state.globalBrightness;
+    slider.style.background = `linear-gradient(to right, #22b745 0%, #22b745 ${state.globalBrightness}%, #e9ecef ${state.globalBrightness}%, #e9ecef 100%)`;
+  }
+
   updateStatusChips();
 }
 

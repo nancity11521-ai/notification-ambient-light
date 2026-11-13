@@ -269,47 +269,99 @@ body {
   letter-spacing: -0.1px;
 }
 
-/* 亮度滑块组件 */
-.brightness-control-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+/* ==========================================================================
+   全新视觉：精细化亮度调节组件 (高质感刻度标尺与绿色进度联动)
+   ========================================================================== */
+.brightness-section {
+  padding: 14px 4px 14px 4px;
 }
 
-.brightness-slider-box {
+.brightness-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.brightness-val-text {
+  font-size: 15px;
+  color: #9ca3af;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.brightness-slider-wrap {
+  width: 100%;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 4px 2px 2px 2px;
 }
 
-.brightness-slider {
-  flex: 1;
+.custom-range-slider {
   -webkit-appearance: none;
   appearance: none;
-  height: 28px;
-  border-radius: 9999px;
-  background: linear-gradient(to right, #2563eb 0%, #2563eb var(--brightness-pct, 80%), #e5e7eb var(--brightness-pct, 80%), #e5e7eb 100%);
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #22b745 0%, #22b745 80%, #e9ecef 80%, #e9ecef 100%);
   outline: none;
   cursor: pointer;
-  border: none;
+  margin: 0;
+  transition: background 0.05s linear;
 }
 
-.brightness-slider::-webkit-slider-thumb {
+/* Chrome / Safari / Edge Thumb */
+.custom-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-  cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.12);
+  cursor: grab;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.sun-icon {
-  color: #4b5563;
+.custom-range-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.08);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.24);
+}
+
+/* Firefox Thumb */
+.custom-range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.12);
+  cursor: grab;
+}
+
+/* 标尺与太阳图标行 */
+.brightness-ruler-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #9ca3af;
+  padding: 0 2px;
+}
+
+.ruler-sun-icon {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.ruler-ticks-svg {
+  flex: 1;
+  height: 16px;
+  overflow: visible;
 }
 
 /* 列表行右侧元数据与状态 */
