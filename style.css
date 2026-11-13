@@ -669,7 +669,8 @@ body {
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
 }
 
-/* 四色律动专属调色盘 (1:1对齐参考图规范) */
+
+/* 四色律动专属调色盘 (中空环 + 选中同色中心点效果，对齐前面的环样式) */
 .four-color-presets-row {
   display: flex;
   align-items: center;
@@ -683,34 +684,72 @@ body {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 3.5px;
+  box-sizing: border-box;
   position: relative;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .four-color-disc:active {
   transform: scale(0.92);
 }
 
-.four-color-disc.active {
-  box-shadow: 0 0 0 2.5px #ffffff, 0 0 0 4.5px #0480fe;
+.four-color-disc::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--card-bg, #ffffff);
+  position: relative;
+  z-index: 1;
 }
 
-/* 4 组四色律动扇形配色 (1:1对齐参考图采样) */
+/* 选中高亮状态：圆圈里面显示一个相同配色的点，点的直径为圈里面的一半 (14.5px) */
+.four-color-disc.active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14.5px;
+  height: 14.5px;
+  border-radius: 50%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 4 组四色律动扇形配色 (环与选中中心点) */
 .four-disc-0 {
+  background: conic-gradient(#63f2ff 0deg 90deg, #ffffff 90deg 180deg, #fffd63 180deg 270deg, #ff69ef 270deg 360deg);
+}
+.four-disc-0.active::before {
   background: conic-gradient(#63f2ff 0deg 90deg, #ffffff 90deg 180deg, #fffd63 180deg 270deg, #ff69ef 270deg 360deg);
 }
 
 .four-disc-1 {
   background: conic-gradient(#fffd63 0deg 90deg, #ffb063 90deg 180deg, #ffffff 180deg 270deg, #63f2ff 270deg 360deg);
 }
+.four-disc-1.active::before {
+  background: conic-gradient(#fffd63 0deg 90deg, #ffb063 90deg 180deg, #ffffff 180deg 270deg, #63f2ff 270deg 360deg);
+}
 
 .four-disc-2 {
   background: conic-gradient(#fffd41 0deg 90deg, #2af72e 90deg 180deg, #ff5400 180deg 270deg, #ffb063 270deg 360deg);
 }
+.four-disc-2.active::before {
+  background: conic-gradient(#fffd41 0deg 90deg, #2af72e 90deg 180deg, #ff5400 180deg 270deg, #ffb063 270deg 360deg);
+}
 
 .four-disc-3 {
+  background: conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg);
+}
+.four-disc-3.active::before {
   background: conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg);
 }
 
