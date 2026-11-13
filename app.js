@@ -41,6 +41,14 @@ const I18N_LOCALES = {
     color_custom: '自定义',
     charging_duration: '充电时间显示时长',
     charging_duration_15s: '15秒',
+    charging_duration_30s: '30秒',
+    charging_duration_1m: '1分钟',
+    charging_duration_always: '常亮',
+    select_all: '全选',
+    apps_notification_title: '生效的应用 (通知)',
+    apps_notification_subtitle: '收到通知时氛围灯将闪烁提示',
+    apps_music_title: '生效的应用 (音乐)',
+    apps_music_subtitle: '播放音乐时氛围灯将跟随节奏律动',
     battery_adaptive: '根据电池电量变化',
     in_call_breathing: '通话中呼吸',
     page_active_time: '启用时段',
@@ -85,6 +93,14 @@ const I18N_LOCALES = {
     color_custom: 'Custom',
     charging_duration: 'Charging Display Duration',
     charging_duration_15s: '15s',
+    charging_duration_30s: '30s',
+    charging_duration_1m: '1m',
+    charging_duration_always: 'Always on',
+    select_all: 'Select All',
+    apps_notification_title: 'Active Apps (Notifications)',
+    apps_notification_subtitle: 'Ambient light flashes when notifications arrive',
+    apps_music_title: 'Active Apps (Music)',
+    apps_music_subtitle: 'Ambient light pulses with music playback',
     battery_adaptive: 'Adaptive to Battery Level',
     in_call_breathing: 'Breathe During Call',
     page_active_time: 'Active Schedule',
@@ -129,6 +145,14 @@ const I18N_LOCALES = {
     color_custom: 'Benutzerdefiniert',
     charging_duration: 'Ladeanzeigedauer',
     charging_duration_15s: '15 Sek.',
+    charging_duration_30s: '30 Sek.',
+    charging_duration_1m: '1 Min.',
+    charging_duration_always: 'Immer an',
+    select_all: 'Alle auswählen',
+    apps_notification_title: 'Aktive Apps (Benachrichtigungen)',
+    apps_notification_subtitle: 'Umgebungslicht blinkt bei Benachrichtigungen',
+    apps_music_title: 'Aktive Apps (Musik)',
+    apps_music_subtitle: 'Umgebungslicht pulsiert zur Musik',
     battery_adaptive: 'Akkustand-abhängig',
     in_call_breathing: 'Atmen während Anruf',
     page_active_time: 'Aktivierungszeitraum',
@@ -173,6 +197,14 @@ const I18N_LOCALES = {
     color_custom: 'Personalizado',
     charging_duration: 'Duración de pantalla de carga',
     charging_duration_15s: '15 s',
+    charging_duration_30s: '30 s',
+    charging_duration_1m: '1 min',
+    charging_duration_always: 'Siempre encendido',
+    select_all: 'Seleccionar todo',
+    apps_notification_title: 'Apps activas (Notificaciones)',
+    apps_notification_subtitle: 'La luz ambiental parpadea al recibir notificaciones',
+    apps_music_title: 'Apps activas (Música)',
+    apps_music_subtitle: 'La luz ambiental pulsa con el ritmo de la música',
     battery_adaptive: 'Cambiar según nivel de batería',
     in_call_breathing: 'Respiración en llamada',
     page_active_time: 'Horario de activación',
@@ -217,6 +249,14 @@ const I18N_LOCALES = {
     color_custom: 'Пользовательский',
     charging_duration: 'Время отображения зарядки',
     charging_duration_15s: '15 сек',
+    charging_duration_30s: '30 сек',
+    charging_duration_1m: '1 мин',
+    charging_duration_always: 'Всегда включено',
+    select_all: 'Выбрать все',
+    apps_notification_title: 'Активные приложения (Уведомления)',
+    apps_notification_subtitle: 'Подсветка мигает при получении уведомлений',
+    apps_music_title: 'Активные приложения (Музыка)',
+    apps_music_subtitle: 'Подсветка пульсирует в такт музыке',
     battery_adaptive: 'Изменение по уровню заряда',
     in_call_breathing: 'Дыхание во время вызова',
     page_active_time: 'Период активности',
@@ -261,6 +301,14 @@ const I18N_LOCALES = {
     color_custom: 'Personnalisé',
     charging_duration: 'Durée d’affichage de charge',
     charging_duration_15s: '15 s',
+    charging_duration_30s: '30 s',
+    charging_duration_1m: '1 min',
+    charging_duration_always: 'Toujours allumé',
+    select_all: 'Tout sélectionner',
+    apps_notification_title: 'Applications actives (Notifications)',
+    apps_notification_subtitle: 'La lumière clignote lors de la réception de notifications',
+    apps_music_title: 'Applications actives (Musique)',
+    apps_music_subtitle: 'La lumière pulse au rythme de la musique',
     battery_adaptive: 'Adapter selon niveau de batterie',
     in_call_breathing: 'Respiration pendant l’appel',
     page_active_time: "Période d'activation",
@@ -305,6 +353,14 @@ const I18N_LOCALES = {
     color_custom: 'カスタム',
     charging_duration: '充電表示時間',
     charging_duration_15s: '15秒',
+    charging_duration_30s: '30秒',
+    charging_duration_1m: '1分',
+    charging_duration_always: '常時点灯',
+    select_all: 'すべて選択',
+    apps_notification_title: '有効なアプリ (通知)',
+    apps_notification_subtitle: '通知受信時にアンビエントライトが点滅します',
+    apps_music_title: '有効なアプリ (音楽)',
+    apps_music_subtitle: '音楽再生時にリズムに合わせてライトが変化します',
     battery_adaptive: 'バッテリー残量に連動',
     in_call_breathing: '通話中呼吸',
     page_active_time: '有効時間帯',
@@ -368,8 +424,32 @@ const state = {
     mode: 'scheduled',
     startTime: '14:26',
     endTime: '23:00'
+  },
+  effectiveApps: {
+    notification: { all: true, items: {} },
+    music: { all: true, items: {} }
   }
 };
+
+const NOTIFICATION_APPS = [
+  { id: 'wechat', name: '微信', badge: '微', color: '#07c160' },
+  { id: 'qq', name: 'QQ', badge: '企', color: '#12b7f5' },
+  { id: 'sms', name: '信息', badge: '信', color: '#34c759' },
+  { id: 'phone', name: '电话', badge: '话', color: '#007aff' },
+  { id: 'dingtalk', name: '钉钉', badge: '钉', color: '#0089ff' },
+  { id: 'feishu', name: '飞书', badge: '飞', color: '#3370ff' },
+  { id: 'mail', name: '邮件', badge: '邮', color: '#5856d6' }
+];
+
+const MUSIC_APPS = [
+  { id: 'soda_music', name: '汽水音乐', badge: '汽', color: '#00f5e6' },
+  { id: 'qq_music', name: 'QQ音乐', badge: '音', color: '#31c27c' },
+  { id: 'netease_music', name: '网易云音乐', badge: '云', color: '#e60026' },
+  { id: 'kugou_music', name: '酷狗音乐', badge: '狗', color: '#00a9ff' },
+  { id: 'kuwo_music', name: '酷我音乐', badge: '我', color: '#ff7200' },
+  { id: 'apple_music', name: 'Apple Music', badge: '♫', color: '#fc3c44' },
+  { id: 'spotify', name: 'Spotify', badge: '◉', color: '#1db954' }
+];
 
 // 3. 初始化
 document.addEventListener('DOMContentLoaded', () => {
@@ -754,8 +834,10 @@ function pickSceneWheelColor(e, sceneId, subKey = 'main') {
   if (!box) return;
 
   const rect = box.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+  const clientY = (e.touches && e.touches.length > 0) ? e.touches[0].clientY : e.clientY;
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
   const cx = rect.width / 2;
   const cy = rect.height / 2;
   const dx = x - cx;
@@ -1287,4 +1369,100 @@ function updateActiveTimeSummary() {
   } else {
     summaryElem.textContent = `${state.schedule.startTime} - ${state.schedule.endTime}`;
   }
+}
+
+/**
+ * 充电时间显示时长抽屉控制与选定
+ */
+function openChargingDurationSheet() {
+  toggleDurationSheet(true);
+}
+
+function toggleDurationSheet(show) {
+  const el = document.getElementById('durationModalBackdrop');
+  if (el) el.classList.toggle('active', !!show);
+}
+
+function selectChargingDuration(durKey) {
+  state.scenes.charging.duration = durKey;
+  ['15s', '30s', '1m', 'always'].forEach(k => {
+    const opt = document.getElementById(`opt_duration_${k}`);
+    if (opt) opt.classList.toggle('active', k === durKey);
+  });
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const statusElem = document.getElementById('statusText_charging_duration');
+  if (statusElem) {
+    statusElem.setAttribute('data-i18n', `charging_duration_${durKey}`);
+    statusElem.textContent = dict[`charging_duration_${durKey}`] || durKey;
+  }
+  toggleDurationSheet(false);
+}
+
+/**
+ * 生效应用列表抽屉控制与交互
+ */
+let curAppsType = 'notification';
+
+function openEffectiveAppsSheet(type) {
+  curAppsType = type;
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const title = document.getElementById('appsSheetTitle');
+  const sub = document.getElementById('appsSheetSubtitle');
+  if (title) title.textContent = dict[`apps_${type}_title`] || (type === 'notification' ? '生效的应用 (通知)' : '生效的应用 (音乐)');
+  if (sub) sub.textContent = dict[`apps_${type}_subtitle`] || (type === 'notification' ? '收到通知时氛围灯将闪烁提示' : '播放音乐时氛围灯将跟随节奏律动');
+
+  renderAppsList(type);
+  toggleAppsSheet(true);
+}
+
+function toggleAppsSheet(show) {
+  const el = document.getElementById('appsModalBackdrop');
+  if (el) el.classList.toggle('active', !!show);
+}
+
+function renderAppsList(type) {
+  const container = document.getElementById('appsListContainer');
+  if (!container) return;
+  const apps = type === 'notification' ? NOTIFICATION_APPS : MUSIC_APPS;
+  const appState = state.effectiveApps[type];
+
+  // 同步全选开关
+  const allSw = document.getElementById('switch_apps_select_all');
+  if (allSw) allSw.checked = appState.all;
+
+  container.innerHTML = apps.map(app => {
+    const isChecked = appState.items[app.id] !== false;
+    return `
+      <div class="app-item-row">
+        <div class="app-item-left">
+          <div class="app-icon-badge" style="background-color: ${app.color};">${app.badge}</div>
+          <span class="app-name">${app.name}</span>
+        </div>
+        <label class="switch-toggle">
+          <input type="checkbox" id="switch_app_${app.id}" ${isChecked ? 'checked' : ''} onchange="toggleAppItem('${type}', '${app.id}', this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleAppItem(type, appId, checked) {
+  state.effectiveApps[type].items[appId] = checked;
+  const apps = type === 'notification' ? NOTIFICATION_APPS : MUSIC_APPS;
+  const allChecked = apps.every(a => state.effectiveApps[type].items[a.id] !== false);
+  state.effectiveApps[type].all = allChecked;
+  const allSw = document.getElementById('switch_apps_select_all');
+  if (allSw) allSw.checked = allChecked;
+}
+
+function toggleAllApps(checked) {
+  const type = curAppsType;
+  state.effectiveApps[type].all = checked;
+  const apps = type === 'notification' ? NOTIFICATION_APPS : MUSIC_APPS;
+  apps.forEach(a => {
+    state.effectiveApps[type].items[a.id] = checked;
+    const sw = document.getElementById(`switch_app_${a.id}`);
+    if (sw) sw.checked = checked;
+  });
 }

@@ -354,7 +354,7 @@
             </label>
           </div>
           <div class="setting-divider"></div>
-          <div class="setting-row clickable" onclick="alert('进入生效应用列表页面')">
+          <div class="setting-row clickable" onclick="openEffectiveAppsSheet('notification')">
             <span class="setting-label" data-i18n="effective_apps">生效的应用</span>
             <div class="row-meta">
               <svg class="row-chevron" width="8" height="15" viewBox="0 0 8 15" fill="none">
@@ -482,10 +482,10 @@
             </label>
           </div>
           <div class="setting-divider"></div>
-          <div class="setting-row clickable" onclick="alert('充电时间显示时长：可配置15秒、30秒、1分钟或常亮')">
+          <div class="setting-row clickable" onclick="openChargingDurationSheet()">
             <span class="setting-label" data-i18n="charging_duration">充电时间显示时长</span>
             <div class="row-meta">
-              <span class="row-status" data-i18n="charging_duration_15s">15秒</span>
+              <span class="row-status" id="statusText_charging_duration" data-i18n="charging_duration_15s">15秒</span>
               <svg class="row-chevron" width="8" height="15" viewBox="0 0 8 15" fill="none">
                 <path d="M 1.5 1.5 L 6.5 7.5 L 1.5 13.5" stroke="#c2c2c2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -607,7 +607,7 @@
             </label>
           </div>
           <div class="setting-divider"></div>
-          <div class="setting-row clickable" onclick="alert('生效音乐播放器应用列表')">
+          <div class="setting-row clickable" onclick="openEffectiveAppsSheet('music')">
             <span class="setting-label" data-i18n="effective_apps">生效的应用</span>
             <div class="row-meta">
               <svg class="row-chevron" width="8" height="15" viewBox="0 0 8 15" fill="none">
@@ -912,6 +912,59 @@
             <button type="button" class="sheet-lang-btn" data-lang="ru-RU" onclick="selectAppLanguage('ru-RU')">🇷🇺 Русский</button>
             <button type="button" class="sheet-lang-btn" data-lang="fr-FR" onclick="selectAppLanguage('fr-FR')">🇫🇷 Français</button>
             <button type="button" class="sheet-lang-btn" data-lang="ja-JP" onclick="selectAppLanguage('ja-JP')">🇯🇵 日本語</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 移动端充电显示时长抽屉 -->
+      <div class="lang-modal-backdrop" id="durationModalBackdrop" onclick="toggleDurationSheet(false)">
+        <div class="lang-bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-header">
+            <span class="sheet-title" data-i18n="charging_duration">充电时间显示时长</span>
+            <button type="button" class="sheet-close" onclick="toggleDurationSheet(false)">✕</button>
+          </div>
+          <div class="sheet-options-list">
+            <div class="sheet-option-item clickable active" id="opt_duration_15s" onclick="selectChargingDuration('15s')">
+              <span class="option-label" data-i18n="charging_duration_15s">15秒</span>
+              <span class="option-check">✓</span>
+            </div>
+            <div class="sheet-option-item clickable" id="opt_duration_30s" onclick="selectChargingDuration('30s')">
+              <span class="option-label" data-i18n="charging_duration_30s">30秒</span>
+              <span class="option-check">✓</span>
+            </div>
+            <div class="sheet-option-item clickable" id="opt_duration_1m" onclick="selectChargingDuration('1m')">
+              <span class="option-label" data-i18n="charging_duration_1m">1分钟</span>
+              <span class="option-check">✓</span>
+            </div>
+            <div class="sheet-option-item clickable" id="opt_duration_always" onclick="selectChargingDuration('always')">
+              <span class="option-label" data-i18n="charging_duration_always">常亮</span>
+              <span class="option-check">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 移动端生效应用列表抽屉 -->
+      <div class="lang-modal-backdrop" id="appsModalBackdrop" onclick="toggleAppsSheet(false)">
+        <div class="lang-bottom-sheet apps-bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-header">
+            <div>
+              <span class="sheet-title" id="appsSheetTitle" data-i18n="effective_apps">生效的应用</span>
+              <p class="sheet-subtitle" id="appsSheetSubtitle">收到通知时氛围灯将闪烁提示</p>
+            </div>
+            <button type="button" class="sheet-close" onclick="toggleAppsSheet(false)">✕</button>
+          </div>
+          <div class="apps-select-all-row">
+            <span class="setting-label" data-i18n="select_all">全选</span>
+            <label class="switch-toggle">
+              <input type="checkbox" id="switch_apps_select_all" checked onchange="toggleAllApps(this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="apps-list-container" id="appsListContainer">
+            <!-- 动态生成应用列表 -->
           </div>
         </div>
       </div>
