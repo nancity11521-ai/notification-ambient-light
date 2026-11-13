@@ -552,6 +552,38 @@
               <span class="toggle-slider"></span>
             </label>
           </div>
+
+          <!-- 充电颜色选择模块（根据电池电量变化关闭后显示，样式与其他场景1:1一致） -->
+          <div id="colorModule_charging" style="display: none;">
+            <div class="setting-divider"></div>
+            <div class="color-module-wrapper">
+              <div class="section-title-row">
+                <span class="setting-label" data-i18n="color_select">颜色选择</span>
+                <span class="current-color-hint" id="colorHint_charging_main" data-i18n="color_grass_green">浅绿</span>
+              </div>
+
+              <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
+              <div class="color-presets-row" id="colorPresets_charging_main">
+                <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('charging', '#00e600', 'color_grass_green', 'main')" aria-label="绿色"></button>
+                <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('charging', '#ffa850', 'color_peach_orange', 'main')" aria-label="橙色"></button>
+                <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('charging', '#4ca8ff', 'color_fog_blue', 'main')" aria-label="蓝色"></button>
+                <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('charging', '#00f5e6', 'color_cyan_blue', 'main')" aria-label="青色"></button>
+                <div class="color-preset-divider"></div>
+                <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('charging', 'rainbow', 'main')" aria-label="彩色律动"></button>
+                <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('charging', 'four_color', 'main')" aria-label="四色律动"></button>
+              </div>
+
+              <!-- 全彩拾色大圆盘 -->
+              <div class="color-wheel-wrapper">
+                <div class="color-wheel-box" id="colorWheel_charging_main" onclick="pickSceneWheelColor(event, 'charging', 'main')">
+                  <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
+                  <div class="wheel-picker-thumb" id="wheelThumb_charging_main" style="left: 35%; top: 90%;">
+                    <span class="thumb-core" id="thumbCore_charging_main" style="background-color: #00e600;"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
 

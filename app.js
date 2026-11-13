@@ -346,7 +346,8 @@ const state = {
     charging: {
       enabled: true,
       effect: 'waterflow',
-      color: '#00a838',
+      color: '#00e600',
+      colorKey: 'color_grass_green',
       duration: '15s',
       batteryAdaptive: true
     },
@@ -399,6 +400,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  if (params.has('adaptive')) {
+    const ad = params.get('adaptive').toLowerCase();
+    state.scenes.charging.batteryAdaptive = (ad !== '0' && ad !== 'false' && ad !== 'off');
+    const adSw = document.getElementById('switch_batteryAdaptive');
+    if (adSw) adSw.checked = state.scenes.charging.batteryAdaptive;
+  }
+
   // 初始化各场景的动效和颜色
   initAllScenes();
 
@@ -426,6 +434,7 @@ function initAllScenes() {
       applyHaloColor(scData.color);
     }
   });
+  toggleBatteryAdaptive(state.scenes.charging.batteryAdaptive);
 }
 
 /**
@@ -471,7 +480,10 @@ function navigateTo(pageId) {
 
   // 5. 更新状态栏胶囊与当前场景的发光环颜色动效
   if (state.scenes[pageId]) {
-    applyHaloColor(state.scenes[pageId].color || '#00e600');
+    const curColor = (pageId === 'charging' && state.scenes.charging.batteryAdaptive)
+      ? '#00e600'
+      : (state.scenes[pageId].color || '#00e600');
+    applyHaloColor(curColor);
     applySceneEffectToMockup(pageId, state.scenes[pageId].effect);
   }
   updateStatusChips();
@@ -867,6 +879,16 @@ function toggleInCallBreathe(checked) {
 
 function toggleBatteryAdaptive(checked) {
   state.scenes.charging.batteryAdaptive = checked;
+  const colorModule = document.getElementById('colorModule_charging');
+  if (colorModule) {
+    colorModule.style.display = checked ? 'none' : 'block';
+  }
+  if (checked) {
+    applyHaloColor('#00e600');
+  } else {
+    applyHaloColor(state.scenes.charging.color || '#00e600');
+  }
+  updateStatusChips();
 }
 
 /**
