@@ -1,12 +1,29 @@
 /**
- * 氛围灯通知灯效设置 - 多语言交互原型控制器 (DYNAMIC SOUND 光环版)
+ * 手机氛围灯效果设置 - 多场景与多语言交互系统控制器 (DYNAMIC SOUND)
  */
 
-// 1. 多语言国际化字典 (i18n Dictionary)
+// 1. 七国语言国际化字典 (i18n Dictionary)
 const I18N_LOCALES = {
   'zh-CN': {
-    notification_title: '通知',
-    notification_switch: '通知',
+    page_home: '幻彩脉动',
+    page_call: '来电',
+    page_notification: '通知',
+    page_charging: '充电',
+    page_music: '音乐',
+    page_power: '开关机',
+    magic_pulse_switch: '幻彩脉动',
+    magic_pulse_hint: '在低电量、省电模式、勿扰模式、睡眠模式下幻彩脉动功能不可用',
+    active_time: '启用时段',
+    active_time_all_day: '全天启用',
+    brightness: '亮度',
+    scene_party: '派对',
+    scene_call: '来电',
+    scene_notification: '通知',
+    scene_charging: '充电',
+    scene_music: '音乐',
+    scene_power: '开关机',
+    status_enabled: '已开启',
+    status_disabled: '已关闭',
     effective_apps: '生效的应用',
     effect_title: '灯效',
     color_select: '颜色选择',
@@ -16,17 +33,37 @@ const I18N_LOCALES = {
     effect_waterflow: '流水',
     effect_color_rhythm: '彩色律动',
     effect_four_color: '四色律动',
-    effect_blinking: '脉动',
     color_grass_green: '草绿',
     color_peach_orange: '浅橙',
     color_fog_blue: '灰蓝',
     color_cyan_blue: '青蓝',
     color_dark_green: '深绿',
-    color_custom: '自定义'
+    color_custom: '自定义',
+    charging_duration: '充电时间显示时长',
+    charging_duration_15s: '15秒',
+    battery_adaptive: '根据电池电量变化',
+    in_call_breathing: '通话中呼吸'
   },
   'en-US': {
-    notification_title: 'Notification',
-    notification_switch: 'Notification',
+    page_home: 'Dynamic Pulse',
+    page_call: 'Incoming Call',
+    page_notification: 'Notification',
+    page_charging: 'Charging',
+    page_music: 'Music',
+    page_power: 'Power On/Off',
+    magic_pulse_switch: 'Dynamic Pulse',
+    magic_pulse_hint: 'Dynamic Pulse is unavailable in low battery, power saving, DND, or sleep mode',
+    active_time: 'Active Hours',
+    active_time_all_day: 'All Day',
+    brightness: 'Brightness',
+    scene_party: 'Party',
+    scene_call: 'Incoming Call',
+    scene_notification: 'Notification',
+    scene_charging: 'Charging',
+    scene_music: 'Music',
+    scene_power: 'Power On/Off',
+    status_enabled: 'Enabled',
+    status_disabled: 'Disabled',
     effective_apps: 'Applied Apps',
     effect_title: 'Light Effect',
     color_select: 'Color Selection',
@@ -36,17 +73,37 @@ const I18N_LOCALES = {
     effect_waterflow: 'Water Flow',
     effect_color_rhythm: 'Color Rhythm',
     effect_four_color: '4-Color Rhythm',
-    effect_blinking: 'Pulsing',
     color_grass_green: 'Grass Green',
     color_peach_orange: 'Peach Orange',
     color_fog_blue: 'Haze Blue',
     color_cyan_blue: 'Cyan Blue',
     color_dark_green: 'Deep Green',
-    color_custom: 'Custom'
+    color_custom: 'Custom',
+    charging_duration: 'Charging Display Duration',
+    charging_duration_15s: '15s',
+    battery_adaptive: 'Adaptive to Battery Level',
+    in_call_breathing: 'Breathe During Call'
   },
   'de-DE': {
-    notification_title: 'Benachrichtigung',
-    notification_switch: 'Benachrichtigung',
+    page_home: 'Farbpulsieren',
+    page_call: 'Eingehender Anruf',
+    page_notification: 'Benachrichtigung',
+    page_charging: 'Laden',
+    page_music: 'Musik',
+    page_power: 'Ein-/Ausschalten',
+    magic_pulse_switch: 'Farbpulsieren',
+    magic_pulse_hint: 'Farbpulsieren ist im Energiespar-, Nicht-Stören- oder Schlafmodus nicht verfügbar',
+    active_time: 'Aktive Zeit',
+    active_time_all_day: 'Ganztägig',
+    brightness: 'Helligkeit',
+    scene_party: 'Party',
+    scene_call: 'Eingehender Anruf',
+    scene_notification: 'Benachrichtigung',
+    scene_charging: 'Laden',
+    scene_music: 'Musik',
+    scene_power: 'Ein-/Ausschalten',
+    status_enabled: 'Aktiviert',
+    status_disabled: 'Deaktiviert',
     effective_apps: 'Angewendete Apps',
     effect_title: 'Lichteffekt',
     color_select: 'Farbauswahl',
@@ -56,17 +113,37 @@ const I18N_LOCALES = {
     effect_waterflow: 'Fließend',
     effect_color_rhythm: 'Farbrhythmus',
     effect_four_color: '4-Farben-Rhythmus',
-    effect_blinking: 'Pulsieren',
     color_grass_green: 'Grasgrün',
     color_peach_orange: 'Pfirsich-Orange',
     color_fog_blue: 'Dunstblau',
     color_cyan_blue: 'Zyanblau',
     color_dark_green: 'Dunkelgrün',
-    color_custom: 'Benutzerdefiniert'
+    color_custom: 'Benutzerdefiniert',
+    charging_duration: 'Ladeanzeigedauer',
+    charging_duration_15s: '15 Sek.',
+    battery_adaptive: 'Akkustand-abhängig',
+    in_call_breathing: 'Atmen während Anruf'
   },
   'es-ES': {
-    notification_title: 'Notificación',
-    notification_switch: 'Notificación',
+    page_home: 'Pulso dinámico',
+    page_call: 'Llamada entrante',
+    page_notification: 'Notificación',
+    page_charging: 'Carga',
+    page_music: 'Música',
+    page_power: 'Encendido/Apagado',
+    magic_pulse_switch: 'Pulso dinámico',
+    magic_pulse_hint: 'El pulso dinámico no está disponible en batería baja, ahorro de energía, no molestar o modo sueño',
+    active_time: 'Horario activo',
+    active_time_all_day: 'Todo el día',
+    brightness: 'Brillo',
+    scene_party: 'Fiesta',
+    scene_call: 'Llamada entrante',
+    scene_notification: 'Notificación',
+    scene_charging: 'Carga',
+    scene_music: 'Música',
+    scene_power: 'Encendido/Apagado',
+    status_enabled: 'Activado',
+    status_disabled: 'Desactivado',
     effective_apps: 'Aplicaciones activas',
     effect_title: 'Efecto de luz',
     color_select: 'Selección de color',
@@ -76,17 +153,37 @@ const I18N_LOCALES = {
     effect_waterflow: 'Flujo continuo',
     effect_color_rhythm: 'Ritmo multicolor',
     effect_four_color: 'Ritmo 4 colores',
-    effect_blinking: 'Pulsación',
     color_grass_green: 'Verde hierba',
     color_peach_orange: 'Naranja melocotón',
     color_fog_blue: 'Azul bruma',
     color_cyan_blue: 'Azul cian',
     color_dark_green: 'Verde oscuro',
-    color_custom: 'Personalizado'
+    color_custom: 'Personalizado',
+    charging_duration: 'Duración de pantalla de carga',
+    charging_duration_15s: '15 s',
+    battery_adaptive: 'Cambiar según nivel de batería',
+    in_call_breathing: 'Respiración en llamada'
   },
   'ru-RU': {
-    notification_title: 'Уведомление',
-    notification_switch: 'Уведомление',
+    page_home: 'Динамический пульс',
+    page_call: 'Входящий вызов',
+    page_notification: 'Уведомление',
+    page_charging: 'Зарядка',
+    page_music: 'Музыка',
+    page_power: 'Вкл/Выкл питания',
+    magic_pulse_switch: 'Динамический пульс',
+    magic_pulse_hint: 'Динамический пульс недоступен при низком заряде, в режиме энергосбережения, «Не беспокоить» или «Сон»',
+    active_time: 'Время работы',
+    active_time_all_day: 'Весь день',
+    brightness: 'Яркость',
+    scene_party: 'Вечеринка',
+    scene_call: 'Входящий вызов',
+    scene_notification: 'Уведомление',
+    scene_charging: 'Зарядка',
+    scene_music: 'Музыка',
+    scene_power: 'Вкл/Выкл питания',
+    status_enabled: 'Включено',
+    status_disabled: 'Отключено',
     effective_apps: 'Применяемые приложения',
     effect_title: 'Световой эффект',
     color_select: 'Выбор цвета',
@@ -96,17 +193,37 @@ const I18N_LOCALES = {
     effect_waterflow: 'Течение',
     effect_color_rhythm: 'Цветной ритм',
     effect_four_color: '4-цветный ритм',
-    effect_blinking: 'Пульсация',
     color_grass_green: 'Травяной зеленый',
     color_peach_orange: 'Персиковый',
     color_fog_blue: 'Туманно-синий',
     color_cyan_blue: 'Циановый',
     color_dark_green: 'Темно-зеленый',
-    color_custom: 'Пользовательский'
+    color_custom: 'Пользовательский',
+    charging_duration: 'Время отображения зарядки',
+    charging_duration_15s: '15 сек',
+    battery_adaptive: 'Изменение по уровню заряда',
+    in_call_breathing: 'Дыхание во время вызова'
   },
   'fr-FR': {
-    notification_title: 'Notification',
-    notification_switch: 'Notification',
+    page_home: 'Pulsation dynamique',
+    page_call: 'Appel entrant',
+    page_notification: 'Notification',
+    page_charging: 'Charge',
+    page_music: 'Musique',
+    page_power: 'Marche/Arrêt',
+    magic_pulse_switch: 'Pulsation dynamique',
+    magic_pulse_hint: 'Pulsation dynamique indisponible en batterie faible, économie d’énergie, Ne pas déranger ou veille',
+    active_time: 'Plage horaire',
+    active_time_all_day: 'Toute la journée',
+    brightness: 'Luminosité',
+    scene_party: 'Fête',
+    scene_call: 'Appel entrant',
+    scene_notification: 'Notification',
+    scene_charging: 'Charge',
+    scene_music: 'Musique',
+    scene_power: 'Marche/Arrêt',
+    status_enabled: 'Activé',
+    status_disabled: 'Désactivé',
     effective_apps: 'Applications actives',
     effect_title: 'Effet lumineux',
     color_select: 'Sélection de couleur',
@@ -116,17 +233,37 @@ const I18N_LOCALES = {
     effect_waterflow: 'Ruissellement',
     effect_color_rhythm: 'Rythme couleur',
     effect_four_color: 'Rythme 4 couleurs',
-    effect_blinking: 'Pulsation',
     color_grass_green: 'Vert herbe',
     color_peach_orange: 'Orange pêche',
     color_fog_blue: 'Bleu brume',
     color_cyan_blue: 'Bleu cyan',
     color_dark_green: 'Vert foncé',
-    color_custom: 'Personnalisé'
+    color_custom: 'Personnalisé',
+    charging_duration: 'Durée d’affichage de charge',
+    charging_duration_15s: '15 s',
+    battery_adaptive: 'Adapter selon niveau de batterie',
+    in_call_breathing: 'Respiration pendant l’appel'
   },
   'ja-JP': {
-    notification_title: '通知',
-    notification_switch: '通知',
+    page_home: 'ダイナミックパルス',
+    page_call: '着信',
+    page_notification: '通知',
+    page_charging: '充電',
+    page_music: '音楽',
+    page_power: '電源オン/オフ',
+    magic_pulse_switch: 'ダイナミックパルス',
+    magic_pulse_hint: '低バッテリー、省電力、おやすみ、サイレントモード時は利用できません',
+    active_time: '有効時間帯',
+    active_time_all_day: '終日',
+    brightness: '明るさ',
+    scene_party: 'パーティー',
+    scene_call: '着信',
+    scene_notification: '通知',
+    scene_charging: '充電',
+    scene_music: '音楽',
+    scene_power: '電源オン/オフ',
+    status_enabled: 'オン',
+    status_disabled: 'オフ',
     effective_apps: '適用アプリ',
     effect_title: '点灯エフェクト',
     color_select: 'カラー選択',
@@ -136,89 +273,428 @@ const I18N_LOCALES = {
     effect_waterflow: '流水',
     effect_color_rhythm: 'カラーリズム',
     effect_four_color: '4色リズム',
-    effect_blinking: 'パルス',
     color_grass_green: 'グラスグリーン',
     color_peach_orange: 'ピーチオレンジ',
     color_fog_blue: 'フォグブルー',
     color_cyan_blue: 'シアンブルー',
     color_dark_green: 'ディープグリーン',
-    color_custom: 'カスタム'
+    color_custom: 'カスタム',
+    charging_duration: '充電表示時間',
+    charging_duration_15s: '15秒',
+    battery_adaptive: 'バッテリー残量に連動',
+    in_call_breathing: '通話中呼吸'
   }
 };
 
-// 当前应用状态（默认选中深绿，对齐新设计稿）
+// 2. 全局应用与场景独立状态
 const state = {
   lang: 'zh-CN',
-  effect: 'breathing',
-  color: '#00a838',
-  colorKey: 'color_dark_green',
-  notificationEnabled: true,
-  layoutMode: 'scroll',
+  currentPage: 'home',
+  globalBrightness: 80,
   activeStyle: 'blue',
-  pulseOpt: 'opt_d' // 默认选定方案4 (能量脉冲节拍柱)
+  pulseOpt: 'opt_d',
+  scenes: {
+    home: {
+      enabled: true,
+      partyEnabled: true,
+      effect: 'color_rhythm',
+      color: '#00a838'
+    },
+    call: {
+      enabled: true,
+      effect: 'breathing',
+      color: '#00a838',
+      colorKey: 'color_dark_green',
+      inCallBreathe: true,
+      inCallColor: '#00a838',
+      inCallColorKey: 'color_dark_green'
+    },
+    notification: {
+      enabled: true,
+      effect: 'breathing',
+      color: '#00a838',
+      colorKey: 'color_dark_green'
+    },
+    charging: {
+      enabled: true,
+      effect: 'waterflow',
+      color: '#00a838',
+      duration: '15s',
+      batteryAdaptive: true
+    },
+    music: {
+      enabled: true,
+      effect: 'color_rhythm',
+      color: '#00a838'
+    },
+    power: {
+      enabled: true,
+      effect: 'pulsing',
+      color: '#00a838'
+    }
+  }
 };
 
-// 初始化
+// 3. 初始化
 document.addEventListener('DOMContentLoaded', () => {
-  // 支持 URL 参数快速指定状态 (?lang=de-DE&mode=grid&effect=pulsing&style=island)
   const params = new URLSearchParams(window.location.search);
   if (params.has('lang') && I18N_LOCALES[params.get('lang')]) {
     state.lang = params.get('lang');
-  }
-  if (params.has('mode')) {
-    state.layoutMode = params.get('mode');
-  }
-  if (params.has('effect')) {
-    state.effect = params.get('effect');
-  }
-  if (params.has('style')) {
-    state.activeStyle = params.get('style');
+    const select = document.getElementById('langSelect');
+    if (select) select.value = state.lang;
   }
 
-  if (params.has('pulse_opt')) {
-    state.pulseOpt = params.get('pulse_opt');
-    switchPulseIcon(state.pulseOpt);
+  if (params.has('page') && state.scenes[params.get('page')]) {
+    state.currentPage = params.get('page');
   }
 
-  if (params.has('color')) {
-    state.color = params.get('color');
-    const matchingCircle = document.querySelector(`.color-circle-btn[data-color="${state.color}"]`);
-    if (matchingCircle) {
-      document.querySelectorAll('#colorPresetsRow .color-circle-btn').forEach(b => b.classList.remove('active'));
-      matchingCircle.classList.add('active');
-      state.colorKey = matchingCircle.getAttribute('data-name-key') || 'color_custom';
-    }
-  }
+  // 初始化各场景的动效和颜色
+  initAllScenes();
 
-  applyLayoutMode(state.layoutMode);
-  setActiveStyle(state.activeStyle);
+  // 设置初始页面导航
+  navigateTo(state.currentPage);
   updateLanguageDisplay();
-  applyEffect(state.effect);
-  selectEffect(state.effect);
-  applyHaloColor(state.color);
   startRealtimeClock();
-  initColorWheelDrag();
+  setGlobalBrightness(state.globalBrightness);
 
-  // 监听胶囊容器横向滚动事件，动态控制左/右双向羽化渐隐
-  const track = document.getElementById('capsulesTrack');
-  if (track) {
-    track.addEventListener('scroll', checkCapsuleOverflow, { passive: true });
-  }
+  // 绑定所有胶囊滚动容器的双向羽化渐隐监听
+  initAllScrollersOverflow();
 });
 
 /**
- * 实时更新状态栏时间
+ * 初始化所有场景的初始状态、动效与拾色
  */
-function startRealtimeClock() {
-  const timeElem = document.getElementById('statusTime');
-  const update = () => {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    if (timeElem) timeElem.textContent = `${h}:${m}`;
+function initAllScenes() {
+  Object.keys(state.scenes).forEach(sceneId => {
+    const scData = state.scenes[sceneId];
+    if (scData.effect) {
+      applySceneEffectToMockup(sceneId, scData.effect);
+    }
+    if (scData.color) {
+      applyHaloColor(scData.color);
+    }
+  });
+}
+
+/**
+ * 页面平滑路由切换
+ */
+function navigateTo(pageId) {
+  if (!state.scenes[pageId] && pageId !== 'home') return;
+  state.currentPage = pageId;
+
+  // 1. 切换视图显隐
+  document.querySelectorAll('.page-view').forEach(view => {
+    view.classList.remove('active');
+  });
+  const targetView = document.getElementById(`view_${pageId}`);
+  if (targetView) {
+    targetView.classList.add('active');
+    targetView.scrollTop = 0;
+  }
+
+  // 2. 控制顶部返回按钮
+  const btnBack = document.getElementById('btnNavBack');
+  if (btnBack) {
+    btnBack.style.display = pageId === 'home' ? 'none' : 'flex';
+  }
+
+  // 3. 动态更新顶部标题
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const titleElem = document.getElementById('navTitle');
+  if (titleElem) {
+    titleElem.textContent = dict[`page_${pageId}`] || '幻彩脉动';
+  }
+
+  // 4. 同步侧边栏控制台激活按钮
+  document.querySelectorAll('.page-picker-toggles .mode-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  const curNavBtn = document.getElementById(`btnNav_${pageId}`);
+  if (curNavBtn) curNavBtn.classList.add('active');
+
+  // 5. 更新状态栏胶囊
+  updateStatusChips();
+
+  // 6. 检查胶囊溢出状态
+  setTimeout(() => {
+    checkCapsuleOverflowForScene(pageId);
+  }, 50);
+}
+
+/**
+ * 返回到主首页
+ */
+function goBackToHome() {
+  navigateTo('home');
+}
+
+/**
+ * 选择各场景的灯效（呼吸、脉动、流光、流水、彩色律动、四色律动）
+ */
+function selectSceneEffect(sceneId, effectName) {
+  const scData = state.scenes[sceneId];
+  if (!scData || !scData.enabled) return;
+
+  scData.effect = effectName;
+
+  // 1. 更新当前场景内胶囊的高亮选中态
+  const track = document.getElementById(`capsulesTrack_${sceneId}`);
+  if (track) {
+    track.querySelectorAll('.capsule-btn').forEach(btn => {
+      const isCur = btn.getAttribute('data-effect') === effectName;
+      btn.classList.toggle('active', isCur);
+      if (isCur) {
+        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  }
+
+  // 2. 更新该场景顶部 DYNAMIC SOUND 设备动效
+  applySceneEffectToMockup(sceneId, effectName);
+
+  // 3. 更新提示文案
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const hintElem = document.getElementById(`effectHint_${sceneId}`);
+  if (hintElem && dict[`effect_${effectName}`]) {
+    hintElem.textContent = dict[`effect_${effectName}`];
+  }
+
+  updateStatusChips();
+}
+
+/**
+ * 应用动效类名到具体场景的设备发光环
+ */
+function applySceneEffectToMockup(sceneId, effectName) {
+  const mockup = document.getElementById(`mockup_${sceneId}`);
+  if (!mockup) return;
+
+  mockup.classList.remove(
+    'fx-breathing',
+    'fx-pulsing',
+    'fx-streamer',
+    'fx-waterflow',
+    'fx-color_rhythm',
+    'fx-four_color',
+    'fx-blinking',
+    'fx-off'
+  );
+
+  const scData = state.scenes[sceneId];
+  if (!scData || !scData.enabled) {
+    mockup.classList.add('fx-off');
+    return;
+  }
+
+  mockup.classList.add(`fx-${effectName}`);
+}
+
+/**
+ * 场景内点击 5 个快捷颜色圆圈
+ */
+function selectSceneColor(sceneId, colorHex, colorKey, subKey = 'main') {
+  const scData = state.scenes[sceneId];
+  if (!scData) return;
+
+  if (subKey === 'incall') {
+    scData.inCallColor = colorHex;
+    scData.inCallColorKey = colorKey;
+  } else {
+    scData.color = colorHex;
+    scData.colorKey = colorKey;
+  }
+
+  // 1. 更新预设圆圈高亮
+  const boxId = `${sceneId}_${subKey}`;
+  const presetsRow = document.getElementById(`colorPresets_${boxId}`);
+  if (presetsRow) {
+    presetsRow.querySelectorAll('.color-circle-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-color') === colorHex);
+    });
+  }
+
+  // 2. 同步更新色轮把手
+  updateWheelThumb(boxId, colorHex);
+
+  // 3. 更新提示文案
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const hint = document.getElementById(`colorHint_${boxId}`);
+  if (hint && dict[colorKey]) {
+    hint.textContent = dict[colorKey];
+  }
+
+  // 4. 应用颜色到发光环及胶囊联动描边
+  applyHaloColor(colorHex);
+  updateStatusChips();
+}
+
+/**
+ * 在色轮上取色
+ */
+function pickSceneWheelColor(e, sceneId, subKey = 'main') {
+  const scData = state.scenes[sceneId];
+  if (!scData) return;
+
+  const boxId = `${sceneId}_${subKey}`;
+  const box = document.getElementById(`colorWheel_${boxId}`);
+  if (!box) return;
+
+  const rect = box.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const cx = rect.width / 2;
+  const cy = rect.height / 2;
+  const dx = x - cx;
+  const dy = y - cy;
+  const dist = Math.hypot(dx, dy);
+  const maxRadius = rect.width / 2;
+
+  const clampedDist = Math.min(dist, maxRadius - 2);
+  const angleRad = Math.atan2(dy, dx);
+  const thumbX = cx + Math.cos(angleRad) * clampedDist;
+  const thumbY = cy + Math.sin(angleRad) * clampedDist;
+
+  const thumb = document.getElementById(`wheelThumb_${boxId}`);
+  const thumbCore = document.getElementById(`thumbCore_${boxId}`);
+  if (thumb) {
+    thumb.style.left = `${(thumbX / rect.width) * 100}%`;
+    thumb.style.top = `${(thumbY / rect.height) * 100}%`;
+  }
+
+  let deg = (angleRad * 180) / Math.PI;
+  if (deg < 0) deg += 360;
+
+  const sat = Math.min(1, dist / maxRadius);
+  const pickedHex = hslToHex(deg, sat * 100, 50);
+
+  if (subKey === 'incall') {
+    scData.inCallColor = pickedHex;
+    scData.inCallColorKey = 'color_custom';
+  } else {
+    scData.color = pickedHex;
+    scData.colorKey = 'color_custom';
+  }
+
+  if (thumbCore) thumbCore.style.backgroundColor = pickedHex;
+
+  // 清除快捷圆圈选中
+  const presetsRow = document.getElementById(`colorPresets_${boxId}`);
+  if (presetsRow) {
+    presetsRow.querySelectorAll('.color-circle-btn').forEach(b => b.classList.remove('active'));
+  }
+
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const hint = document.getElementById(`colorHint_${boxId}`);
+  if (hint) hint.textContent = dict['color_custom'] || '自定义';
+
+  applyHaloColor(pickedHex);
+  updateStatusChips();
+}
+
+function updateWheelThumb(boxId, colorHex) {
+  const presetPositions = {
+    '#55c800': { left: '26%', top: '78%' },
+    '#fca86c': { left: '80%', top: '74%' },
+    '#7ba5e4': { left: '22%', top: '30%' },
+    '#61e3d7': { left: '16%', top: '55%' },
+    '#00a838': { left: '32%', top: '84%' }
   };
-  update();
-  setInterval(update, 30000);
+  const pos = presetPositions[colorHex] || { left: '32%', top: '84%' };
+  const thumb = document.getElementById(`wheelThumb_${boxId}`);
+  const thumbCore = document.getElementById(`thumbCore_${boxId}`);
+  if (thumb) {
+    thumb.style.left = pos.left;
+    thumb.style.top = pos.top;
+  }
+  if (thumbCore) {
+    thumbCore.style.backgroundColor = colorHex;
+  }
+}
+
+/**
+ * 幻彩脉动总开关
+ */
+function toggleMasterPulse(checked) {
+  state.scenes.home.enabled = checked;
+  const mockup = document.getElementById('mockup_home');
+  if (mockup) {
+    mockup.classList.toggle('fx-off', !checked);
+  }
+}
+
+/**
+ * 派对模式开关
+ */
+function togglePartyMode(checked) {
+  state.scenes.home.partyEnabled = checked;
+  const mockup = document.getElementById('mockup_home');
+  if (mockup) {
+    if (checked) {
+      mockup.classList.remove('fx-off');
+      mockup.classList.add('fx-color_rhythm');
+    } else {
+      mockup.classList.remove('fx-color_rhythm');
+      mockup.classList.add('fx-breathing');
+    }
+  }
+}
+
+/**
+ * 场景开关切换 (来电, 通知, 充电, 音乐, 开关机)
+ */
+function toggleSceneSwitch(sceneId, checked) {
+  const scData = state.scenes[sceneId];
+  if (!scData) return;
+  scData.enabled = checked;
+
+  // 更新首页状态指示文案
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const statusElem = document.getElementById(`statusText_${sceneId}`);
+  if (statusElem) {
+    statusElem.textContent = checked ? (dict['status_enabled'] || '已开启') : (dict['status_disabled'] || '已关闭');
+  }
+
+  // 更新当前页面设备环状态
+  const mockup = document.getElementById(`mockup_${sceneId}`);
+  if (mockup) {
+    if (!checked) {
+      mockup.classList.add('fx-off');
+    } else {
+      mockup.classList.remove('fx-off');
+      applySceneEffectToMockup(sceneId, scData.effect);
+    }
+  }
+}
+
+function toggleInCallBreathe(checked) {
+  state.scenes.call.inCallBreathe = checked;
+}
+
+function toggleBatteryAdaptive(checked) {
+  state.scenes.charging.batteryAdaptive = checked;
+}
+
+/**
+ * 全局亮度调节
+ */
+function setGlobalBrightness(val) {
+  state.globalBrightness = parseInt(val, 10);
+  document.documentElement.style.setProperty('--device-halo-brightness', state.globalBrightness / 100);
+  document.documentElement.style.setProperty('--brightness-pct', `${state.globalBrightness}%`);
+  updateStatusChips();
+}
+
+/**
+ * 设置全局 CSS 颜色变量（驱动描边随选色动态联动）
+ */
+function applyHaloColor(hexColor) {
+  document.documentElement.style.setProperty('--active-halo-color', hexColor);
+  const cleanHex = hexColor.replace('#', '');
+  const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
+  const g = parseInt(cleanHex.substring(2, 4), 16) || 168;
+  const b = parseInt(cleanHex.substring(4, 6), 16) || 56;
+  document.documentElement.style.setProperty('--active-halo-rgb', `${r}, ${g}, ${b}`);
 }
 
 /**
@@ -242,280 +718,85 @@ function updateLanguageDisplay() {
     }
   });
 
-  // 更新提示性文本
-  const effectKey = `effect_${state.effect}`;
-  const hintElem = document.getElementById('currentEffectHint');
-  if (hintElem && dict[effectKey]) {
-    hintElem.textContent = dict[effectKey];
+  // 更新导航栏标题
+  const titleElem = document.getElementById('navTitle');
+  if (titleElem) {
+    titleElem.textContent = dict[`page_${state.currentPage}`] || '幻彩脉动';
   }
 
-  const colorLabelElem = document.getElementById('currentColorLabel');
-  if (colorLabelElem) {
-    colorLabelElem.textContent = dict[state.colorKey] || state.color;
-  }
-
-  // 调试状态更新
-  const chipEffect = document.getElementById('chipEffect');
-  const chipColor = document.getElementById('chipColor');
-  if (chipEffect) chipEffect.textContent = `灯效: ${dict[effectKey] || state.effect}`;
-  if (chipColor) chipColor.textContent = `颜色: ${dict[state.colorKey] || state.color}`;
-
-  setTimeout(checkCapsuleOverflow, 50);
-}
-
-/**
- * 切换灯效排版模式 (支持 5 大优雅模式)
- */
-function setLayoutMode(mode) {
-  state.layoutMode = mode;
-  applyLayoutMode(mode);
-
-  const btnMap = {
-    scroll: 'btnModeScroll',
-    grid: 'btnModeGrid',
-    cards: 'btnModeCards',
-    segmented: 'btnModeSegmented',
-    carousel: 'btnModeCarousel'
-  };
-
-  Object.values(btnMap).forEach(id => {
-    const b = document.getElementById(id);
-    if (b) b.classList.remove('active');
-  });
-
-  const activeBtn = document.getElementById(btnMap[mode]);
-  if (activeBtn) activeBtn.classList.add('active');
-}
-
-function applyLayoutMode(mode) {
-  const scroller = document.getElementById('capsulesScrollerWrap');
-  if (!scroller) return;
-
-  scroller.classList.remove(
-    'layout-scroll',
-    'layout-grid',
-    'layout-cards',
-    'layout-segmented',
-    'layout-carousel'
-  );
-  scroller.classList.add(`layout-${mode}`);
-
-  checkCapsuleOverflow();
-}
-
-function checkCapsuleOverflow() {
-  const scroller = document.getElementById('capsulesScrollerWrap');
-  const track = document.getElementById('capsulesTrack');
-  if (!scroller || !track) return;
-  
-  if (state.layoutMode === 'scroll') {
-    const scrollLeft = track.scrollLeft;
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    const hasOverflow = maxScroll > 2;
-
-    scroller.classList.toggle('has-overflow', hasOverflow);
-    // 当向右滑动超过 3px 时，左边缘淡入羽化渐隐遮罩
-    scroller.classList.toggle('mask-left', hasOverflow && scrollLeft > 3);
-    // 当未滑到最右边缘时，右边缘保持羽化渐隐遮罩
-    scroller.classList.toggle('mask-right', hasOverflow && scrollLeft < maxScroll - 3);
-  } else {
-    scroller.classList.remove('has-overflow', 'mask-left', 'mask-right');
-  }
-}
-
-/**
- * 切换选中状态的优雅视觉风格
- */
-function setActiveStyle(styleName) {
-  state.activeStyle = styleName;
-  const wrap = document.getElementById('capsulesScrollerWrap');
-  if (wrap) {
-    wrap.classList.remove('active-style-blue', 'active-style-island', 'active-style-soft');
-    wrap.classList.add(`active-style-${styleName}`);
-  }
-
-  ['btnStyleBlue', 'btnStyleIsland', 'btnStyleSoft'].forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) btn.classList.remove('active');
-  });
-  const curBtnMap = { blue: 'btnStyleBlue', island: 'btnStyleIsland', soft: 'btnStyleSoft' };
-  const curBtn = document.getElementById(curBtnMap[styleName]);
-  if (curBtn) curBtn.classList.add('active');
-}
-
-/**
- * 选择效果（呼吸、闪烁、彩色律动、4色律动）
- */
-function selectEffect(effectName) {
-  if (!state.notificationEnabled) return;
-  state.effect = effectName;
-
-  document.querySelectorAll('.capsule-btn').forEach(btn => {
-    const isCur = btn.getAttribute('data-effect') === effectName;
-    btn.classList.toggle('active', isCur);
-    if (isCur && state.layoutMode === 'scroll') {
-      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  // 更新场景状态已开启/已关闭
+  ['call', 'notification', 'charging', 'music', 'power'].forEach(sc => {
+    const stElem = document.getElementById(`statusText_${sc}`);
+    if (stElem) {
+      const isEnabled = state.scenes[sc]?.enabled;
+      stElem.textContent = isEnabled ? (dict['status_enabled'] || '已开启') : (dict['status_disabled'] || '已关闭');
     }
   });
 
-  applyEffect(effectName);
-  updateLanguageDisplay();
+  updateStatusChips();
 }
 
 /**
- * 应用动效类名到设备发光环
+ * 更新左侧控制台的状态胶囊
  */
-function applyEffect(effectName) {
-  const mockup = document.querySelector('.device-mockup-new');
-  if (!mockup) return;
+function updateStatusChips() {
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  const curScene = state.scenes[state.currentPage] || state.scenes.home;
 
-  mockup.classList.remove(
-    'fx-breathing',
-    'fx-pulsing',
-    'fx-streamer',
-    'fx-waterflow',
-    'fx-color_rhythm',
-    'fx-four_color',
-    'fx-blinking',
-    'fx-off'
-  );
+  const chipPage = document.getElementById('chipPage');
+  if (chipPage) chipPage.textContent = `页面: ${dict['page_' + state.currentPage] || state.currentPage}`;
 
-  if (!state.notificationEnabled) {
-    mockup.classList.add('fx-off');
-    return;
-  }
+  const chipEffect = document.getElementById('chipEffect');
+  if (chipEffect) chipEffect.textContent = `灯效: ${dict['effect_' + curScene.effect] || curScene.effect || '呼吸'}`;
 
-  mockup.classList.add(`fx-${effectName}`);
+  const chipColor = document.getElementById('chipColor');
+  if (chipColor) chipColor.textContent = `颜色: ${dict[curScene.colorKey] || curScene.color || '深绿'}`;
+
+  const chipBrightness = document.getElementById('chipBrightness');
+  if (chipBrightness) chipBrightness.textContent = `亮度: ${state.globalBrightness}%`;
 }
 
 /**
- * 点击 5 款预设单色圆圈
+ * 监听所有胶囊滚动容器横向滚动事件，动态控制左/右双向羽化渐隐
  */
-function selectPresetColor(btnElem, colorHex, nameKey) {
-  if (!state.notificationEnabled) return;
-
-  state.color = colorHex;
-  state.colorKey = nameKey;
-
-  document.querySelectorAll('#colorPresetsRow .color-circle-btn').forEach(b => b.classList.remove('active'));
-  btnElem.classList.add('active');
-  document.documentElement.style.setProperty('--selected-preset-ring', colorHex);
-
-  // 同步更新色轮把手颜色与位置（根据固定预设色预估位置）
-  const presetPositions = {
-    '#55c800': { left: '26%', top: '78%' },
-    '#fca86c': { left: '80%', top: '74%' },
-    '#7ba5e4': { left: '22%', top: '30%' },
-    '#61e3d7': { left: '16%', top: '55%' },
-    '#00a838': { left: '32%', top: '84%' }
-  };
-  const pos = presetPositions[colorHex] || { left: '32%', top: '84%' };
-  const thumb = document.getElementById('wheelThumb');
-  const thumbCore = document.getElementById('thumbCore');
-  if (thumb) {
-    thumb.style.left = pos.left;
-    thumb.style.top = pos.top;
-  }
-  if (thumbCore) {
-    thumbCore.style.backgroundColor = colorHex;
-  }
-
-  applyHaloColor(colorHex);
-  updateLanguageDisplay();
-}
-
-/**
- * 全彩拾色大圆盘点击与拖拽拾色
- */
-function pickColorFromWheel(e) {
-  if (!state.notificationEnabled) return;
-  const box = document.getElementById('colorWheelBox');
-  if (!box) return;
-
-  const rect = box.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  const cx = rect.width / 2;
-  const cy = rect.height / 2;
-  const dx = x - cx;
-  const dy = y - cy;
-  const dist = Math.hypot(dx, dy);
-  const maxRadius = rect.width / 2;
-
-  // 限制把手在圆盘边缘内
-  const clampedDist = Math.min(dist, maxRadius - 2);
-  const angleRad = Math.atan2(dy, dx);
-  const thumbX = cx + Math.cos(angleRad) * clampedDist;
-  const thumbY = cy + Math.sin(angleRad) * clampedDist;
-
-  const thumb = document.getElementById('wheelThumb');
-  const thumbCore = document.getElementById('thumbCore');
-  if (thumb) {
-    thumb.style.left = `${(thumbX / rect.width) * 100}%`;
-    thumb.style.top = `${(thumbY / rect.height) * 100}%`;
-  }
-
-  // 顺时针色相映射 (3点钟=0deg 红, 6点钟=90deg 绿, 9点钟=180deg 青, 12点钟=270deg 紫)
-  let deg = (angleRad * 180) / Math.PI;
-  if (deg < 0) deg += 360;
-
-  const sat = Math.min(1, dist / maxRadius);
-  const pickedHex = hslToHex(deg, sat * 100, 50);
-
-  state.color = pickedHex;
-  state.colorKey = 'color_custom';
-
-  if (thumbCore) {
-    thumbCore.style.backgroundColor = pickedHex;
-  }
-
-  // 清除预设圆圈的选中状态
-  document.querySelectorAll('#colorPresetsRow .color-circle-btn').forEach(b => b.classList.remove('active'));
-
-  applyHaloColor(pickedHex);
-  updateLanguageDisplay();
-}
-
-/**
- * 监听色盘触摸/拖拽操作
- */
-function initColorWheelDrag() {
-  const box = document.getElementById('colorWheelBox');
-  if (!box) return;
-  let isDragging = false;
-
-  const handleMove = (e) => {
-    if (!isDragging) return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    pickColorFromWheel({ clientX, clientY });
-  };
-
-  box.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    pickColorFromWheel(e);
+function initAllScrollersOverflow() {
+  ['call', 'notification', 'charging', 'music', 'power'].forEach(sceneId => {
+    const track = document.getElementById(`capsulesTrack_${sceneId}`);
+    if (track) {
+      track.addEventListener('scroll', () => {
+        checkCapsuleOverflowForScene(sceneId);
+      }, { passive: true });
+    }
   });
-  window.addEventListener('mousemove', handleMove);
-  window.addEventListener('mouseup', () => { isDragging = false; });
+}
 
-  box.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    pickColorFromWheel(e.touches[0]);
-  }, { passive: true });
-  window.addEventListener('touchmove', handleMove, { passive: true });
-  window.addEventListener('touchend', () => { isDragging = false; });
+function checkCapsuleOverflowForScene(sceneId) {
+  const scroller = document.getElementById(`capsulesWrap_${sceneId}`);
+  const track = document.getElementById(`capsulesTrack_${sceneId}`);
+  if (!scroller || !track) return;
+
+  const scrollLeft = track.scrollLeft;
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  const hasOverflow = maxScroll > 2;
+
+  scroller.classList.toggle('has-overflow', hasOverflow);
+  scroller.classList.toggle('mask-left', hasOverflow && scrollLeft > 3);
+  scroller.classList.toggle('mask-right', hasOverflow && scrollLeft < maxScroll - 3);
 }
 
 /**
- * 将当前拾取的颜色应用到 DYNAMIC SOUND 环形氛围灯
+ * 实时更新状态栏时间
  */
-function applyHaloColor(hexColor) {
-  document.documentElement.style.setProperty('--active-halo-color', hexColor);
-  const cleanHex = hexColor.replace('#', '');
-  const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
-  const g = parseInt(cleanHex.substring(2, 4), 16) || 168;
-  const b = parseInt(cleanHex.substring(4, 6), 16) || 56;
-  document.documentElement.style.setProperty('--active-halo-rgb', `${r}, ${g}, ${b}`);
+function startRealtimeClock() {
+  const timeElem = document.getElementById('statusTime');
+  const update = () => {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    if (timeElem) timeElem.textContent = `${h}:${m}`;
+  };
+  update();
+  setInterval(update, 30000);
 }
 
 /**
@@ -530,115 +811,4 @@ function hslToHex(h, s, l) {
     return Math.round(255 * color).toString(16).padStart(2, '0');
   };
   return `#${f(0)}${f(8)}${f(4)}`;
-}
-
-/**
- * 通知总开关
- */
-/**
- * 脉动 (Pulsing) 图标候选方案字典
- */
-const PULSE_ICONS = {
-  // 方案 A: 经典心电脉冲波 (ECG Pulse Wave)
-  opt_a: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <defs>
-      <linearGradient id="gradPulseA" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="50%" stop-color="#ef4444"/>
-        <stop offset="100%" stop-color="#ec4899"/>
-      </linearGradient>
-    </defs>
-    <path d="M2 12h4l2.5-6.5 3.5 13 3-9 2 4h5" stroke="url(#gradPulseA)"/>
-    <circle cx="8.5" cy="5.5" r="1.5" fill="url(#gradPulseA)"/>
-  </svg>`,
-
-  // 方案 B: 同心圆环脉冲波 (Concentric Ripple)
-  opt_b: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round">
-    <defs>
-      <linearGradient id="gradPulseB" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="50%" stop-color="#ef4444"/>
-        <stop offset="100%" stop-color="#ec4899"/>
-      </linearGradient>
-    </defs>
-    <circle cx="12" cy="12" r="3.2" fill="url(#gradPulseB)"/>
-    <path d="M7 8a7 7 0 0 0 0 8M17 8a7 7 0 0 1 0 8" stroke="url(#gradPulseB)"/>
-    <path d="M4 5a11 11 0 0 0 0 14M20 5a11 11 0 0 1 0 14" stroke="url(#gradPulseB)" stroke-opacity="0.5"/>
-  </svg>`,
-
-  // 方案 C: 环形内置心跳波 (Ring Pulse)
-  opt_c: `<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <defs>
-      <linearGradient id="gradPulseC" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="50%" stop-color="#ef4444"/>
-        <stop offset="100%" stop-color="#ec4899"/>
-      </linearGradient>
-    </defs>
-    <circle cx="12" cy="12" r="8.5" stroke="url(#gradPulseC)" stroke-width="1.8" stroke-opacity="0.32"/>
-    <path d="M3.5 12h3.5l2-4.5 3 9 2.5-6.5 2 3.5h4" stroke="url(#gradPulseC)" stroke-width="2.4"/>
-  </svg>`,
-
-  // 方案 D: 能量脉冲节拍柱 (Pulse Equalizer)
-  opt_d: `<svg viewBox="0 0 24 24" fill="none">
-    <defs>
-      <linearGradient id="gradPulseD" x1="0%" y1="100%" x2="0%" y2="0%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="50%" stop-color="#ef4444"/>
-        <stop offset="100%" stop-color="#ec4899"/>
-      </linearGradient>
-    </defs>
-    <rect x="3.5" y="9" width="3" height="6" rx="1.5" fill="url(#gradPulseD)" opacity="0.6"/>
-    <rect x="8.5" y="4.5" width="3" height="15" rx="1.5" fill="url(#gradPulseD)"/>
-    <rect x="13.5" y="7.5" width="3" height="9" rx="1.5" fill="url(#gradPulseD)" opacity="0.85"/>
-    <rect x="18.5" y="10.5" width="3" height="3" rx="1.5" fill="url(#gradPulseD)" opacity="0.45"/>
-  </svg>`,
-
-  // 方案 E: 高能双折电脉冲 (Sharp Bolt)
-  opt_e: `<svg viewBox="0 0 24 24" fill="none">
-    <defs>
-      <linearGradient id="gradPulseE" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#f59e0b"/>
-        <stop offset="50%" stop-color="#ef4444"/>
-        <stop offset="100%" stop-color="#ec4899"/>
-      </linearGradient>
-    </defs>
-    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="url(#gradPulseE)"/>
-  </svg>`
-};
-
-/**
- * 切换脉动图标候选方案
- */
-function switchPulseIcon(key) {
-  const iconWrap = document.getElementById('pulsingIconWrap');
-  if (iconWrap && PULSE_ICONS[key]) {
-    iconWrap.innerHTML = PULSE_ICONS[key];
-  }
-  document.querySelectorAll('.pulse-opt-btn').forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-pulse-opt') === key);
-  });
-}
-
-/**
- * 通知总开关
- */
-function toggleNotification(enabled) {
-  state.notificationEnabled = enabled;
-  const mockup = document.querySelector('.device-mockup-new');
-  
-  if (!enabled) {
-    if (mockup) mockup.classList.add('fx-off');
-    document.querySelectorAll('.capsule-btn, .color-circle-btn, .color-wheel-box').forEach(btn => {
-      btn.style.opacity = '0.35';
-      btn.style.pointerEvents = 'none';
-    });
-  } else {
-    if (mockup) mockup.classList.remove('fx-off');
-    document.querySelectorAll('.capsule-btn, .color-circle-btn, .color-wheel-box').forEach(btn => {
-      btn.style.opacity = '1';
-      btn.style.pointerEvents = 'auto';
-    });
-    applyEffect(state.effect);
-  }
 }

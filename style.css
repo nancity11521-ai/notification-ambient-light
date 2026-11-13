@@ -269,6 +269,117 @@ body {
   font-weight: 600;
   color: #111827;
   letter-spacing: -0.3px;
+  transition: opacity 0.2s ease;
+}
+
+/* 多场景页面视图容器（支持主页与各功能二级页平滑切换） */
+.page-view {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 14px 24px 14px;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: none;
+}
+
+.page-view::-webkit-scrollbar {
+  display: none;
+}
+
+.page-view.active {
+  display: flex;
+  animation: pageFadeIn 0.22s cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 首页设备下方提示文案 */
+.sub-hint-text {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+  line-height: 1.45;
+  margin: 0 6px 6px 6px;
+  letter-spacing: -0.1px;
+}
+
+/* 亮度滑块组件 */
+.brightness-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.brightness-slider-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 2px 2px 2px;
+}
+
+.brightness-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 28px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #2563eb 0%, #2563eb var(--brightness-pct, 80%), #e5e7eb var(--brightness-pct, 80%), #e5e7eb 100%);
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.brightness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sun-icon {
+  color: #4b5563;
+  flex-shrink: 0;
+}
+
+/* 列表行右侧元数据与状态 */
+.row-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.row-status {
+  font-size: 13.5px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* 控制台快速页面切换按钮网格 */
+.page-picker-toggles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.page-picker-toggles .mode-btn {
+  font-size: 11.5px;
+  padding: 7px 6px;
+  justify-content: flex-start;
 }
 
 /* 主可滚动区域 */
@@ -342,6 +453,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  filter: brightness(var(--device-halo-brightness, 1));
+  transition: filter 0.2s ease, opacity 0.25s ease;
 }
 
 /* 动态核心环 */
