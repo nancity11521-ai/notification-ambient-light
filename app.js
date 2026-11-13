@@ -354,7 +354,9 @@ const state = {
     music: {
       enabled: true,
       effect: 'color_rhythm',
-      color: '#00a838'
+      color: '#00e600',
+      colorKey: 'color_grass_green',
+      fourColorPalette: 3
     },
     power: {
       enabled: true,
@@ -407,11 +409,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (adSw) adSw.checked = state.scenes.charging.batteryAdaptive;
   }
 
+  if (params.has('effect')) {
+    const ef = params.get('effect');
+    if (state.scenes[state.currentPage]) {
+      state.scenes[state.currentPage].effect = ef;
+    }
+  }
+
   // 初始化各场景的动效和颜色
   initAllScenes();
 
   // 设置初始页面导航
   navigateTo(state.currentPage);
+  if (state.scenes[state.currentPage] && state.scenes[state.currentPage].effect) {
+    selectSceneEffect(state.currentPage, state.scenes[state.currentPage].effect);
+  }
   updateLanguageDisplay();
   startRealtimeClock();
   setGlobalBrightness(state.globalBrightness);
@@ -435,6 +447,7 @@ function initAllScenes() {
     }
   });
   toggleBatteryAdaptive(state.scenes.charging.batteryAdaptive);
+  updateMusicColorModules(state.scenes.music.effect);
 }
 
 /**
@@ -486,6 +499,11 @@ function navigateTo(pageId) {
     applyHaloColor(curColor);
     applySceneEffectToMockup(pageId, state.scenes[pageId].effect);
   }
+
+  // 音乐场景专属：更新调色盘显隐
+  if (pageId === 'music') {
+    updateMusicColorModules(state.scenes.music.effect);
+  }
   updateStatusChips();
 
   // 6. 检查胶囊溢出状态
@@ -499,6 +517,52 @@ function navigateTo(pageId) {
  */
 function goBackToHome() {
   navigateTo('home');
+}
+
+// 四色律动专属的 4 组扇形渐变色板 (1:1对齐参考图采样)
+const FOUR_COLOR_PALETTES = [
+  'conic-gradient(#63f2ff 0deg 90deg, #ffffff 90deg 180deg, #fffd63 180deg 270deg, #ff69ef 270deg 360deg)',
+  'conic-gradient(#fffd63 0deg 90deg, #ffb063 90deg 180deg, #ffffff 180deg 270deg, #63f2ff 270deg 360deg)',
+  'conic-gradient(#fffd41 0deg 90deg, #2af72e 90deg 180deg, #ff5400 180deg 270deg, #ffb063 270deg 360deg)',
+  'conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg)'
+];
+
+/**
+ * 选择音乐场景的四色律动专属配色方案 (0..3)
+ */
+function selectMusicFourColorPalette(index) {
+  state.scenes.music.fourColorPalette = index;
+  document.querySelectorAll('#fourColorPresets_music .four-color-disc').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === index);
+  });
+  const grad = FOUR_COLOR_PALETTES[index] || FOUR_COLOR_PALETTES[3];
+  document.documentElement.style.setProperty('--music-four-color-grad', grad);
+  updateStatusChips();
+}
+
+/**
+ * 音乐场景：根据当前选中的灯效动态控制颜色选择模块显隐
+ * - 彩色律动：不可以选择颜色（隐藏所有调色盘）
+ * - 四色律动：展示四色律动专属配色盘（4组扇形色盘）
+ * - 呼吸：展示与其他场景相同的标准颜色选择（6中空环预设 + 拾色大圆盘）
+ */
+function updateMusicColorModules(effectName) {
+  const fourColorMod = document.getElementById('colorModule_music_four_color');
+  const singleColorMod = document.getElementById('colorModule_music_single');
+
+  if (effectName === 'color_rhythm') {
+    if (fourColorMod) fourColorMod.style.display = 'none';
+    if (singleColorMod) singleColorMod.style.display = 'none';
+  } else if (effectName === 'four_color') {
+    if (fourColorMod) fourColorMod.style.display = 'block';
+    if (singleColorMod) singleColorMod.style.display = 'none';
+    const pIdx = state.scenes.music.fourColorPalette !== undefined ? state.scenes.music.fourColorPalette : 3;
+    selectMusicFourColorPalette(pIdx);
+  } else if (effectName === 'breathing') {
+    if (fourColorMod) fourColorMod.style.display = 'none';
+    if (singleColorMod) singleColorMod.style.display = 'block';
+    applyHaloColor(state.scenes.music.color || '#00e600');
+  }
 }
 
 // 各场景明确允许的专属灯效配置表
@@ -562,6 +626,11 @@ function selectSceneEffect(sceneId, effectName) {
   const hintElem = document.getElementById(`effectHint_${sceneId}`);
   if (hintElem && dict[`effect_${effectName}`]) {
     hintElem.textContent = dict[`effect_${effectName}`];
+  }
+
+  // 5. 音乐场景专属：按动效切换颜色选择区（彩色律动无选色、四色律动展示四色盘、呼吸展示单色盘）
+  if (sceneId === 'music') {
+    updateMusicColorModules(effectName);
   }
 
   updateStatusChips();

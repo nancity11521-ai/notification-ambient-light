@@ -703,6 +703,54 @@
               </div>
             </div>
           </div>
+
+          <!-- 模块 A: 四色律动专属颜色选择（四色律动激活时展示，参考图 1:1 还原） -->
+          <div id="colorModule_music_four_color" style="display: none;">
+            <div class="setting-divider"></div>
+            <div class="color-module-wrapper">
+              <div class="section-title-row">
+                <span class="setting-label" data-i18n="color_select">颜色选择</span>
+              </div>
+              <div class="four-color-presets-row" id="fourColorPresets_music">
+                <button type="button" class="four-color-disc four-disc-0" onclick="selectMusicFourColorPalette(0)" aria-label="配色一"></button>
+                <button type="button" class="four-color-disc four-disc-1" onclick="selectMusicFourColorPalette(1)" aria-label="配色二"></button>
+                <button type="button" class="four-color-disc four-disc-2" onclick="selectMusicFourColorPalette(2)" aria-label="配色三"></button>
+                <button type="button" class="four-color-disc four-disc-3 active" onclick="selectMusicFourColorPalette(3)" aria-label="配色四"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 模块 B: 呼吸专属颜色选择（呼吸激活时展示，与其他场景选色完全一样） -->
+          <div id="colorModule_music_single" style="display: none;">
+            <div class="setting-divider"></div>
+            <div class="color-module-wrapper">
+              <div class="section-title-row">
+                <span class="setting-label" data-i18n="color_select">颜色选择</span>
+                <span class="current-color-hint" id="colorHint_music_main" data-i18n="color_grass_green">浅绿</span>
+              </div>
+
+              <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
+              <div class="color-presets-row" id="colorPresets_music_main">
+                <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('music', '#00e600', 'color_grass_green', 'main')" aria-label="绿色"></button>
+                <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('music', '#ffa850', 'color_peach_orange', 'main')" aria-label="橙色"></button>
+                <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('music', '#4ca8ff', 'color_fog_blue', 'main')" aria-label="蓝色"></button>
+                <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('music', '#00f5e6', 'color_cyan_blue', 'main')" aria-label="青色"></button>
+                <div class="color-preset-divider"></div>
+                <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('music', 'rainbow', 'main')" aria-label="彩色律动"></button>
+                <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('music', 'four_color', 'main')" aria-label="四色律动"></button>
+              </div>
+
+              <!-- 全彩拾色大圆盘 -->
+              <div class="color-wheel-wrapper">
+                <div class="color-wheel-box" id="colorWheel_music_main" onclick="pickSceneWheelColor(event, 'music', 'main')">
+                  <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
+                  <div class="wheel-picker-thumb" id="wheelThumb_music_main" style="left: 35%; top: 90%;">
+                    <span class="thumb-core" id="thumbCore_music_main" style="background-color: #00e600;"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
 

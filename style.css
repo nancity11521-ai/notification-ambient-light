@@ -657,16 +657,61 @@ body {
 
 /* 6. 四色律动 (4-Color Rhythm) */
 .fx-four_color .halo-core-ring {
-  background: conic-gradient(
-    #ef4444 0deg 90deg,
-    #3b82f6 90deg 180deg,
-    #22c55e 180deg 270deg,
-    #eab308 270deg 360deg
-  );
+  background: var(--music-four-color-grad, conic-gradient(
+    #ff5f10 0deg 90deg,
+    #2dffee 90deg 180deg,
+    #2af72e 180deg 270deg,
+    #fffd62 270deg 360deg
+  ));
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
   animation: animHaloRotate 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
+}
+
+/* 四色律动专属调色盘 (1:1对齐参考图规范) */
+.four-color-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 6px 0 16px 0;
+}
+
+.four-color-disc {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.four-color-disc:active {
+  transform: scale(0.92);
+}
+
+.four-color-disc.active {
+  box-shadow: 0 0 0 2.5px #ffffff, 0 0 0 4.5px #0480fe;
+}
+
+/* 4 组四色律动扇形配色 (1:1对齐参考图采样) */
+.four-disc-0 {
+  background: conic-gradient(#63f2ff 0deg 90deg, #ffffff 90deg 180deg, #fffd63 180deg 270deg, #ff69ef 270deg 360deg);
+}
+
+.four-disc-1 {
+  background: conic-gradient(#fffd63 0deg 90deg, #ffb063 90deg 180deg, #ffffff 180deg 270deg, #63f2ff 270deg 360deg);
+}
+
+.four-disc-2 {
+  background: conic-gradient(#fffd41 0deg 90deg, #2af72e 90deg 180deg, #ff5400 180deg 270deg, #ffb063 270deg 360deg);
+}
+
+.four-disc-3 {
+  background: conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg);
 }
 
 .fx-four_color .halo-ambient-glow {
