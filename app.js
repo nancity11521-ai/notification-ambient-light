@@ -390,6 +390,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  if (params.has('master')) {
+    const m = params.get('master').toLowerCase();
+    if (m === '0' || m === 'false' || m === 'off') {
+      state.scenes.home.enabled = false;
+      const sw = document.getElementById('switch_master');
+      if (sw) sw.checked = false;
+    }
+  }
+
   // 初始化各场景的动效和颜色
   initAllScenes();
 
@@ -398,6 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateLanguageDisplay();
   startRealtimeClock();
   setGlobalBrightness(state.globalBrightness);
+  toggleMasterPulse(state.scenes.home.enabled);
 
   // 绑定所有胶囊滚动容器的双向羽化渐隐监听
   initAllScrollersOverflow();
@@ -730,13 +740,48 @@ function updateWheelThumb(boxId, colorHex) {
 
 /**
  * 幻彩脉动总开关
+ * 关闭时：示意图不亮（发光环熄灭 + 切换至未通电物理网罩），其他区域全部置灰并禁用操作
  */
 function toggleMasterPulse(checked) {
   state.scenes.home.enabled = checked;
+  const viewHome = document.getElementById('view_home');
   const mockup = document.getElementById('mockup_home');
+  const mockupImg = mockup ? mockup.querySelector('.device-clean-img') : null;
+
+  if (viewHome) {
+    viewHome.classList.toggle('master-off', !checked);
+  }
+
   if (mockup) {
     mockup.classList.toggle('fx-off', !checked);
   }
+
+  if (mockupImg) {
+    mockupImg.src = checked ? './assets/device_clean.png' : './assets/device_clean_off.png';
+  }
+
+  // 禁用/启用受控控件
+  const partySwitch = document.getElementById('switch_party');
+  if (partySwitch) partySwitch.disabled = !checked;
+  const slider = document.getElementById('homeBrightnessSlider');
+  if (slider) slider.disabled = !checked;
+  document.querySelectorAll('#masterControlledContent button').forEach(btn => btn.disabled = !checked);
+}
+
+/**
+ * 启用时段点击拦截（总开关关闭时禁止进入）
+ */
+function handleActiveTimeRowClick() {
+  if (!state.scenes.home.enabled) return;
+  navigateTo('active_time');
+}
+
+/**
+ * 场景行点击拦截（总开关关闭时禁止进入）
+ */
+function handleSceneRowClick(sceneId) {
+  if (!state.scenes.home.enabled) return;
+  navigateTo(sceneId);
 }
 
 /**

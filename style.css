@@ -477,38 +477,39 @@ body {
    全新设备展示卡片（DYNAMIC SOUND 发光环模组）与动效
    ========================================================================== */
 .device-card-container {
-  background: var(--card-bg);
+  background: #f0f2f7;
   border-radius: 18px;
-  padding: 10px 12px;
+  padding: 8px 12px 0 12px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .device-mockup-new {
   position: relative;
-  width: 240px;
+  width: 310px;
   max-width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .device-clean-img {
   width: 100%;
   height: auto;
   display: block;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.18));
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
 }
 
 /* 覆盖在 DYNAMIC SOUND 发光环上的动态光效层 */
 .halo-ring-emitter {
   position: absolute;
-  left: 72.3%;
-  top: 54.0%;
-  width: 28%;
-  height: 36.2%;
+  left: 67.19%;
+  top: 45.45%;
+  width: 20.63%;
+  aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   pointer-events: none;
@@ -518,7 +519,7 @@ body {
   align-items: center;
   opacity: var(--device-halo-opacity, 0.85);
   filter: brightness(var(--device-halo-brightness, 1));
-  transition: opacity 0.1s ease, filter 0.1s ease;
+  transition: opacity 0.15s ease, filter 0.15s ease;
 }
 
 /* 动态核心环 */
@@ -723,10 +724,29 @@ body {
   opacity: 0.45;
 }
 
-/* 关机/关闭通知时的暗色状态 */
+/* 关机/总开关关闭时的暗色状态与发光环熄灭 */
 .fx-off .halo-ring-emitter {
   opacity: 0 !important;
   animation: none !important;
+}
+
+.fx-off .halo-ambient-glow {
+  opacity: 0 !important;
+  transform: scale(0.6) !important;
+}
+
+/* 当幻彩脉动总开关关闭时：其他地方都置灰，禁用交互 */
+#view_home.master-off #masterControlledContent,
+#view_home.master-off #card_scenes_list {
+  opacity: 0.36;
+  filter: grayscale(0.7);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+
+#view_home.master-off #homeBrightnessSlider {
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
