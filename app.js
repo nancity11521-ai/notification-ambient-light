@@ -489,12 +489,26 @@ function goBackToHome() {
   navigateTo('home');
 }
 
+// 各场景明确允许的专属灯效配置表
+const SCENE_ALLOWED_EFFECTS = {
+  call: ['breathing', 'pulsing'],
+  notification: ['breathing', 'pulsing'],
+  charging: ['waterflow', 'streamer'],
+  music: ['color_rhythm', 'four_color', 'breathing'],
+  power: ['breathing', 'pulsing']
+};
+
 /**
- * 选择各场景的灯效（呼吸、脉动、流光、流水、彩色律动、四色律动）
+ * 选择各场景的灯效（严格遵循各场景支持的灯效列表）
  */
 function selectSceneEffect(sceneId, effectName) {
   const scData = state.scenes[sceneId];
   if (!scData || !scData.enabled) return;
+
+  const allowed = SCENE_ALLOWED_EFFECTS[sceneId];
+  if (allowed && !allowed.includes(effectName)) {
+    return;
+  }
 
   scData.effect = effectName;
 
@@ -587,10 +601,15 @@ function selectSceneColorRing(sceneId, ringType, subKey = 'main') {
     if (targetBtn) targetBtn.classList.add('active');
   }
 
+  const allowed = SCENE_ALLOWED_EFFECTS[sceneId];
   if (ringType === 'rainbow') {
-    selectSceneEffect(sceneId, 'color_rhythm');
+    if (allowed && allowed.includes('color_rhythm')) {
+      selectSceneEffect(sceneId, 'color_rhythm');
+    }
   } else if (ringType === 'four_color') {
-    selectSceneEffect(sceneId, 'four_color');
+    if (allowed && allowed.includes('four_color')) {
+      selectSceneEffect(sceneId, 'four_color');
+    }
   }
 }
 
@@ -607,14 +626,16 @@ function selectSceneColor(sceneId, colorHex, colorKey, subKey = 'main') {
   } else {
     scData.color = colorHex;
     scData.colorKey = colorKey;
-    // 若原先是彩色律动或四色律动，切换到纯色时恢复单色呼吸效果
+    // 若原先是彩色律动或四色律动，切换到纯色时恢复单色呼吸效果（若支持）或首选允许效果
     if (scData.effect === 'color_rhythm' || scData.effect === 'four_color') {
-      scData.effect = 'breathing';
-      applySceneEffectToMockup(sceneId, 'breathing');
+      const allowed = SCENE_ALLOWED_EFFECTS[sceneId];
+      const fallbackEffect = (allowed && allowed.includes('breathing')) ? 'breathing' : (allowed ? allowed[0] : 'breathing');
+      scData.effect = fallbackEffect;
+      applySceneEffectToMockup(sceneId, fallbackEffect);
       const track = document.getElementById(`capsulesTrack_${sceneId}`);
       if (track) {
         track.querySelectorAll('.capsule-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-effect') === 'breathing');
+          btn.classList.toggle('active', btn.getAttribute('data-effect') === fallbackEffect);
         });
       }
     }
@@ -690,12 +711,14 @@ function pickSceneWheelColor(e, sceneId, subKey = 'main') {
     scData.color = pickedHex;
     scData.colorKey = 'color_custom';
     if (scData.effect === 'color_rhythm' || scData.effect === 'four_color') {
-      scData.effect = 'breathing';
-      applySceneEffectToMockup(sceneId, 'breathing');
+      const allowed = SCENE_ALLOWED_EFFECTS[sceneId];
+      const fallbackEffect = (allowed && allowed.includes('breathing')) ? 'breathing' : (allowed ? allowed[0] : 'breathing');
+      scData.effect = fallbackEffect;
+      applySceneEffectToMockup(sceneId, fallbackEffect);
       const track = document.getElementById(`capsulesTrack_${sceneId}`);
       if (track) {
         track.querySelectorAll('.capsule-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-effect') === 'breathing');
+          btn.classList.toggle('active', btn.getAttribute('data-effect') === fallbackEffect);
         });
       }
     }
