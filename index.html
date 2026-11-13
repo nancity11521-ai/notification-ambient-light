@@ -99,36 +99,48 @@
             </div>
           </div>
           <div class="setting-divider"></div>
-          <!-- 亮度调节：5 档精简设计 (20%, 40%, 60%, 80%, 100%) -->
-          <div class="brightness-section">
-            <div class="brightness-header-row">
-              <span class="setting-label" data-i18n="brightness">亮度调节</span>
-              <span class="brightness-val-text" id="homeBrightnessVal">80%</span>
-            </div>
-            <div class="brightness-slider-wrap">
-              <input type="range" min="20" max="100" step="20" value="80" class="custom-range-slider" id="homeBrightnessSlider" oninput="setBrightnessGear(this.value)">
-            </div>
-            <div class="brightness-ruler-row">
-              <span class="ruler-sun-icon" onclick="setBrightnessGear(20)" title="1档 (20%)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="3.2"></circle>
-                  <line x1="12" y1="2" x2="12" y2="4.5"></line>
-                  <line x1="12" y1="19.5" x2="12" y2="22"></line>
-                  <line x1="4.93" y1="4.93" x2="6.7" y2="6.7"></line>
-                  <line x1="17.3" y1="17.3" x2="19.07" y2="19.07"></line>
-                  <line x1="2" y1="12" x2="4.5" y2="12"></line>
-                  <line x1="19.5" y1="12" x2="22" y2="12"></line>
-                  <line x1="4.93" y1="19.07" x2="6.7" y2="17.3"></line>
-                  <line x1="17.3" y1="6.7" x2="19.07" y2="4.93"></line>
+          <!-- 亮度：原生胶囊滑块 5 档设计 (20%, 40%, 60%, 80%, 100%) -->
+          <div class="brightness-control-row">
+            <div class="setting-label" data-i18n="brightness">亮度</div>
+            <div class="brightness-pill-slider-box">
+              <button type="button" class="sun-btn sun-btn-left" onclick="setBrightnessGear(20)" aria-label="1档 (20%)" title="最低亮度">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+                  <line x1="12" y1="2" x2="12" y2="4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="12" y1="19.5" x2="12" y2="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="4.93" y1="4.93" x2="6.7" y2="6.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="17.3" y1="17.3" x2="19.07" y2="19.07" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="2" y1="12" x2="4.5" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="19.5" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="4.93" y1="19.07" x2="6.7" y2="17.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <line x1="17.3" y1="6.7" x2="19.07" y2="4.93" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
                 </svg>
-              </span>
-              <div class="ruler-gears-track" id="rulerGearsTrack">
-                <div class="gear-tick active" data-gear="20" onclick="setBrightnessGear(20)" title="1档 (20%)"></div>
-                <div class="gear-tick active" data-gear="40" onclick="setBrightnessGear(40)" title="2档 (40%)"></div>
-                <div class="gear-tick active" data-gear="60" onclick="setBrightnessGear(60)" title="3档 (60%)"></div>
-                <div class="gear-tick active" data-gear="80" onclick="setBrightnessGear(80)" title="4档 (80%)"></div>
-                <div class="gear-tick" data-gear="100" onclick="setBrightnessGear(100)" title="5档 (100%)"></div>
+              </button>
+              <div class="pill-slider-track-wrap" id="pillSliderTrackWrap">
+                <div class="track-gear-dots">
+                  <span class="gear-dot in-active" data-gear="20"></span>
+                  <span class="gear-dot in-active" data-gear="40"></span>
+                  <span class="gear-dot in-active" data-gear="60"></span>
+                  <span class="gear-dot under-thumb" data-gear="80"></span>
+                  <span class="gear-dot" data-gear="100"></span>
+                </div>
+                <input type="range" min="20" max="100" step="20" value="80" class="pill-range-slider" id="homeBrightnessSlider" oninput="setBrightnessGear(this.value)">
               </div>
+              <button type="button" class="sun-btn sun-btn-right" onclick="setBrightnessGear(100)" aria-label="5档 (100%)" title="最高亮度">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="5.2" fill="currentColor"/>
+                  <line x1="12" y1="1" x2="12" y2="4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="12" y1="20" x2="12" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="1" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="20" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
               <span class="ruler-sun-icon" onclick="setBrightnessGear(100)" title="5档 (100%)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="4.5"></circle>

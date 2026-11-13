@@ -15,7 +15,7 @@ const I18N_LOCALES = {
     magic_pulse_hint: '在低电量、省电模式、勿扰模式、睡眠模式下幻彩脉动功能不可用',
     active_time: '启用时段',
     active_time_all_day: '全天启用',
-    brightness: '亮度调节',
+    brightness: '亮度',
     scene_party: '派对',
     scene_call: '来电',
     scene_notification: '通知',
@@ -721,19 +721,18 @@ function setBrightnessGear(val) {
   const num = parseInt(val, 10);
   state.globalBrightness = num;
 
-  const valElem = document.getElementById('homeBrightnessVal');
-  if (valElem) valElem.textContent = `${num}%`;
-
   const slider = document.getElementById('homeBrightnessSlider');
   if (slider) {
     slider.value = num;
     const pct = ((num - 20) / 80) * 100;
-    slider.style.background = `linear-gradient(to right, #22b745 0%, #22b745 ${pct}%, #e9ecef ${pct}%, #e9ecef 100%)`;
+    slider.style.background = `linear-gradient(to right, #3579f6 0%, #3579f6 ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`;
   }
 
-  document.querySelectorAll('.gear-tick').forEach(tick => {
-    const gearVal = parseInt(tick.getAttribute('data-gear'), 10);
-    tick.classList.toggle('active', gearVal <= num);
+  // 更新胶囊内的 5 个档位圆点状态
+  document.querySelectorAll('.gear-dot').forEach(dot => {
+    const g = parseInt(dot.getAttribute('data-gear'), 10);
+    dot.classList.toggle('in-active', g < num);
+    dot.classList.toggle('under-thumb', g === num);
   });
 
   document.documentElement.style.setProperty('--device-halo-brightness', num / 100);
