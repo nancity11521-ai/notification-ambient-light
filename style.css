@@ -346,14 +346,15 @@ body {
 }
 
 .brightness-card-section {
-  padding-top: 14px;
-  padding-bottom: 16px;
+  padding-top: 20px;
+  padding-bottom: 22px;
 }
 
 .brightness-label-row {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  min-height: 24px;
+  margin-bottom: 16px;
 }
 
 .brightness-label-row .setting-label {
@@ -361,12 +362,13 @@ body {
   font-weight: 400;
   color: var(--text-main, #181818);
   letter-spacing: -0.2px;
+  line-height: 1.3;
 }
 
 .brightness-control-row {
   display: flex;
   align-items: center;
-  min-height: 44px;
+  min-height: 36px;
   padding: 0;
   width: 100%;
 }
