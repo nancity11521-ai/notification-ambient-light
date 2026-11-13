@@ -340,14 +340,14 @@ body {
   cursor: grab;
 }
 
-/* 标尺与太阳图标行 */
+/* 标尺与太阳图标行（精简 5 档标尺） */
 .brightness-ruler-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   color: #9ca3af;
-  padding: 0 2px;
+  padding: 0 4px;
 }
 
 .ruler-sun-icon {
@@ -356,12 +356,41 @@ body {
   align-items: center;
   justify-content: center;
   color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
-.ruler-ticks-svg {
+.ruler-sun-icon:hover {
+  color: #22b745;
+  transform: scale(1.1);
+}
+
+.ruler-gears-track {
   flex: 1;
-  height: 16px;
-  overflow: visible;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+  padding: 0 4px;
+}
+
+.gear-tick {
+  width: 2px;
+  height: 14px;
+  background-color: #cbd5e1;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gear-tick.active {
+  background-color: #9ca3af;
+  height: 15px;
+}
+
+.gear-tick:hover {
+  background-color: #22b745;
+  transform: scaleY(1.2);
 }
 
 /* 列表行右侧元数据与状态 */

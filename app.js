@@ -717,21 +717,33 @@ function toggleBatteryAdaptive(checked) {
 /**
  * 全局亮度调节
  */
-function setGlobalBrightness(val) {
-  state.globalBrightness = parseInt(val, 10);
-  document.documentElement.style.setProperty('--device-halo-brightness', state.globalBrightness / 100);
-  document.documentElement.style.setProperty('--brightness-pct', `${state.globalBrightness}%`);
+function setBrightnessGear(val) {
+  const num = parseInt(val, 10);
+  state.globalBrightness = num;
 
   const valElem = document.getElementById('homeBrightnessVal');
-  if (valElem) valElem.textContent = `${state.globalBrightness}%`;
+  if (valElem) valElem.textContent = `${num}%`;
 
   const slider = document.getElementById('homeBrightnessSlider');
   if (slider) {
-    slider.value = state.globalBrightness;
-    slider.style.background = `linear-gradient(to right, #22b745 0%, #22b745 ${state.globalBrightness}%, #e9ecef ${state.globalBrightness}%, #e9ecef 100%)`;
+    slider.value = num;
+    const pct = ((num - 20) / 80) * 100;
+    slider.style.background = `linear-gradient(to right, #22b745 0%, #22b745 ${pct}%, #e9ecef ${pct}%, #e9ecef 100%)`;
   }
 
+  document.querySelectorAll('.gear-tick').forEach(tick => {
+    const gearVal = parseInt(tick.getAttribute('data-gear'), 10);
+    tick.classList.toggle('active', gearVal <= num);
+  });
+
+  document.documentElement.style.setProperty('--device-halo-brightness', num / 100);
+  document.documentElement.style.setProperty('--brightness-pct', `${num}%`);
+
   updateStatusChips();
+}
+
+function setGlobalBrightness(val) {
+  setBrightnessGear(val);
 }
 
 /**
