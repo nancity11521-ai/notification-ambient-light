@@ -477,9 +477,9 @@ body {
    全新设备展示卡片（DYNAMIC SOUND 发光环模组）与动效
    ========================================================================== */
 .device-card-container {
-  background: #f0f2f7;
+  background: var(--card-bg, #ffffff);
   border-radius: 18px;
-  padding: 8px 12px 0 12px;
+  padding: 10px 14px 0 14px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
