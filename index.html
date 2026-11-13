@@ -89,10 +89,10 @@
             </label>
           </div>
           <div class="setting-divider"></div>
-          <div class="setting-row clickable" onclick="alert('启用时段设置：支持全天启用或自定义时间段')">
+          <div class="setting-row clickable" onclick="navigateTo('active_time')">
             <span class="setting-label" data-i18n="active_time">启用时段</span>
             <div class="row-meta">
-              <span class="row-status" data-i18n="active_time_all_day">全天启用</span>
+              <span class="row-status" id="homeActiveTimeSummary">14:26 - 23:00</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
@@ -1183,6 +1183,53 @@
                 </button>
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 场景视图 7: 启用时段 (时间段设置) -->
+      <div class="page-view" id="view_active_time">
+        <!-- 模式选择卡片：全天启用 / 定时启用 -->
+        <section class="settings-card" style="margin-top: 10px;">
+          <div class="setting-row clickable" onclick="setActiveTimeMode('all_day')">
+            <span class="setting-label" data-i18n="active_time_all_day">全天启用</span>
+            <label class="custom-radio">
+              <input type="radio" name="active_time_mode" id="radio_all_day" onchange="setActiveTimeMode('all_day')">
+              <span class="radio-indicator"></span>
+            </label>
+          </div>
+          <div class="setting-divider"></div>
+          <div class="setting-row clickable" onclick="setActiveTimeMode('scheduled')">
+            <span class="setting-label" data-i18n="active_time_scheduled">定时启用</span>
+            <label class="custom-radio">
+              <input type="radio" name="active_time_mode" id="radio_scheduled" checked onchange="setActiveTimeMode('scheduled')">
+              <span class="radio-indicator"></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 定时设置卡片：开始时间 / 结束时间 -->
+        <section class="settings-card" id="card_time_picker">
+          <div class="setting-row clickable" onclick="triggerTimeEdit('start')">
+            <span class="setting-label" data-i18n="time_start">开始</span>
+            <div class="row-meta">
+              <span class="row-status time-val" id="text_start_time">14:26</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+            <input type="time" id="input_start_time" value="14:26" class="hidden-time-input" onchange="updateScheduledTime('start', this.value)">
+          </div>
+          <div class="setting-divider"></div>
+          <div class="setting-row clickable" onclick="triggerTimeEdit('end')">
+            <span class="setting-label" data-i18n="time_end">结束</span>
+            <div class="row-meta">
+              <span class="row-status time-val" id="text_end_time">23:00</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+            <input type="time" id="input_end_time" value="23:00" class="hidden-time-input" onchange="updateScheduledTime('end', this.value)">
           </div>
         </section>
       </div>

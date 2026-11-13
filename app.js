@@ -43,6 +43,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15秒',
     battery_adaptive: '根据电池电量变化',
     in_call_breathing: '通话中呼吸'
+    page_active_time: '启用时段',
+    active_time_scheduled: '定时启用',
+    time_start: '开始',
+    time_end: '结束',
   },
   'en-US': {
     page_home: 'Dynamic Pulse',
@@ -83,6 +87,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15s',
     battery_adaptive: 'Adaptive to Battery Level',
     in_call_breathing: 'Breathe During Call'
+    page_active_time: 'Active Schedule',
+    active_time_scheduled: 'Scheduled',
+    time_start: 'Start',
+    time_end: 'End',
   },
   'de-DE': {
     page_home: 'Farbpulsieren',
@@ -123,6 +131,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15 Sek.',
     battery_adaptive: 'Akkustand-abhängig',
     in_call_breathing: 'Atmen während Anruf'
+    page_active_time: 'Aktivierungszeitraum',
+    active_time_scheduled: 'Zeitgesteuert',
+    time_start: 'Start',
+    time_end: 'Ende',
   },
   'es-ES': {
     page_home: 'Pulso dinámico',
@@ -163,6 +175,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15 s',
     battery_adaptive: 'Cambiar según nivel de batería',
     in_call_breathing: 'Respiración en llamada'
+    page_active_time: 'Horario de activación',
+    active_time_scheduled: 'Programado',
+    time_start: 'Inicio',
+    time_end: 'Fin',
   },
   'ru-RU': {
     page_home: 'Динамический пульс',
@@ -203,6 +219,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15 сек',
     battery_adaptive: 'Изменение по уровню заряда',
     in_call_breathing: 'Дыхание во время вызова'
+    page_active_time: 'Период активности',
+    active_time_scheduled: 'По расписанию',
+    time_start: 'Начало',
+    time_end: 'Конец',
   },
   'fr-FR': {
     page_home: 'Pulsation dynamique',
@@ -243,6 +263,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15 s',
     battery_adaptive: 'Adapter selon niveau de batterie',
     in_call_breathing: 'Respiration pendant l’appel'
+    page_active_time: 'Période d'activation',
+    active_time_scheduled: 'Planifié',
+    time_start: 'Début',
+    time_end: 'Fin',
   },
   'ja-JP': {
     page_home: 'ダイナミックパルス',
@@ -283,6 +307,10 @@ const I18N_LOCALES = {
     charging_duration_15s: '15秒',
     battery_adaptive: 'バッテリー残量に連動',
     in_call_breathing: '通話中呼吸'
+    page_active_time: '有効時間帯',
+    active_time_scheduled: 'スケジュール有効',
+    time_start: '開始',
+    time_end: '終了',
   }
 };
 
@@ -332,6 +360,11 @@ const state = {
       effect: 'pulsing',
       color: '#00a838'
     }
+  },
+  schedule: {
+    mode: 'scheduled',
+    startTime: '14:26',
+    endTime: '23:00'
   }
 };
 
@@ -382,7 +415,7 @@ function initAllScenes() {
  * 页面平滑路由切换
  */
 function navigateTo(pageId) {
-  if (!state.scenes[pageId] && pageId !== 'home') return;
+  if (!state.scenes[pageId] && pageId !== 'home' && pageId !== 'active_time') return;
   state.currentPage = pageId;
 
   // 1. 切换视图显隐
@@ -853,4 +886,67 @@ function hslToHex(h, s, l) {
     return Math.round(255 * color).toString(16).padStart(2, '0');
   };
   return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+/**
+ * 启用时段设置：切换全天启用 / 定时启用
+ */
+function setActiveTimeMode(mode) {
+  state.schedule.mode = mode;
+  const radioAllDay = document.getElementById('radio_all_day');
+  const radioSched = document.getElementById('radio_scheduled');
+  if (radioAllDay) radioAllDay.checked = (mode === 'all_day');
+  if (radioSched) radioSched.checked = (mode === 'scheduled');
+
+  const cardPicker = document.getElementById('card_time_picker');
+  if (cardPicker) {
+    cardPicker.style.display = (mode === 'scheduled') ? 'block' : 'none';
+  }
+
+  updateActiveTimeSummary();
+}
+
+/**
+ * 触发时间修改
+ */
+function triggerTimeEdit(type) {
+  const input = document.getElementById(`input_${type}_time`);
+  if (!input) return;
+  if (input.showPicker) {
+    input.showPicker();
+  } else {
+    input.focus();
+    input.click();
+  }
+}
+
+/**
+ * 更新设定的时间数值
+ */
+function updateScheduledTime(type, val) {
+  if (!val) return;
+  if (type === 'start') {
+    state.schedule.startTime = val;
+    const txt = document.getElementById('text_start_time');
+    if (txt) txt.textContent = val;
+  } else {
+    state.schedule.endTime = val;
+    const txt = document.getElementById('text_end_time');
+    if (txt) txt.textContent = val;
+  }
+  updateActiveTimeSummary();
+}
+
+/**
+ * 同步主首页上的启用时段摘要文案
+ */
+function updateActiveTimeSummary() {
+  const summaryElem = document.getElementById('homeActiveTimeSummary');
+  if (!summaryElem) return;
+  const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
+  if (state.schedule.mode === 'all_day') {
+    summaryElem.textContent = dict['active_time_all_day'] || '全天启用';
+  } else {
+    summaryElem.textContent = `${state.schedule.startTime} - ${state.schedule.endTime}`;
+  }
 }
