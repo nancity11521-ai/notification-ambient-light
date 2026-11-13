@@ -754,7 +754,8 @@ function selectSceneColorRing(sceneId, ringType, subKey = 'main') {
   const presetsRow = document.getElementById(`colorPresets_${boxId}`);
   if (presetsRow) {
     presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
-    const targetBtn = presetsRow.querySelector(`.color-ring-btn.ring-${ringType}`);
+    const targetClass = (ringType === 'four_color' || ringType === 'four-color') ? 'ring-four-color' : `ring-${ringType}`;
+    const targetBtn = presetsRow.querySelector(`.color-ring-btn.${targetClass}`);
     if (targetBtn) targetBtn.classList.add('active');
   }
 

@@ -1280,6 +1280,8 @@ input:checked + .toggle-slider:before {
   height: 100%;
   border-radius: 50%;
   background: var(--card-bg, #ffffff);
+  position: relative;
+  z-index: 1;
 }
 
 /* 四色圆环 (Four Color Conic Gradient) */
@@ -1295,29 +1297,64 @@ input:checked + .toggle-slider:before {
   height: 100%;
   border-radius: 50%;
   background: var(--card-bg, #ffffff);
+  position: relative;
+  z-index: 1;
 }
 
-/* 选中高亮状态 (加粗 + 微放) */
+/* 选中高亮状态：圆圈里面显示一个相同颜色的点，点的直径为圈里面的一半 (圈内径29px，点直径14.5px) */
 .color-ring-btn.active {
-  transform: scale(1.08);
+  border-width: 3.5px;
 }
+
+.color-ring-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14.5px;
+  height: 14.5px;
+  border-radius: 50%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.color-ring-btn.ring-green.active::before {
+  background-color: #00e600;
+}
+.color-ring-btn.ring-orange.active::before {
+  background-color: #ffa850;
+}
+.color-ring-btn.ring-blue.active::before {
+  background-color: #4ca8ff;
+}
+.color-ring-btn.ring-cyan.active::before {
+  background-color: #00f5e6;
+}
+.color-ring-btn.ring-rainbow.active::before {
+  background: conic-gradient(from 270deg, #ffd700 0%, #00e676 15%, #00b0ff 30%, #7c4dff 45%, #e040fb 60%, #ff1744 75%, #ff9100 88%, #ffd700 100%);
+}
+.color-ring-btn.ring-four-color.active::before {
+  background: conic-gradient(#00e26f 0deg 90deg, #0076e7 90deg 180deg, #ffb400 180deg 270deg, #00d2ba 270deg 360deg);
+}
+
 .color-ring-btn.ring-green.active {
-  border-width: 4.8px;
+  border-width: 3.5px;
 }
 .color-ring-btn.ring-orange.active {
-  border-width: 4.8px;
+  border-width: 3.5px;
 }
 .color-ring-btn.ring-blue.active {
-  border-width: 4.8px;
+  border-width: 3.5px;
 }
 .color-ring-btn.ring-cyan.active {
-  border-width: 4.8px;
+  border-width: 3.5px;
 }
 .color-ring-btn.ring-rainbow.active {
-  padding: 4.8px;
+  padding: 3.5px;
 }
 .color-ring-btn.ring-four-color.active {
-  padding: 4.8px;
+  padding: 3.5px;
 }
 
 /* 全彩拾色大圆盘 */
