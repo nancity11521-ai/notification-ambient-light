@@ -489,15 +489,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (adSw) adSw.checked = state.scenes.charging.batteryAdaptive;
   }
 
+  // 初始化各场景的动效和颜色
+  initAllScenes();
+
   if (params.has('effect')) {
     const ef = params.get('effect');
     if (state.scenes[state.currentPage]) {
       state.scenes[state.currentPage].effect = ef;
     }
   }
-
-  // 初始化各场景的动效和颜色
-  initAllScenes();
 
   // 设置初始页面导航
   navigateTo(state.currentPage);
@@ -599,12 +599,12 @@ function goBackToHome() {
   navigateTo('home');
 }
 
-// 四色律动专属的 4 组扇形渐变色板 (1:1对齐参考图采样)
+// 四色律动专属的 4 组四色调色方案 (每次只显示一个颜色，每熄灭一次换一个颜色)
 const FOUR_COLOR_PALETTES = [
-  'conic-gradient(#63f2ff 0deg 90deg, #ffffff 90deg 180deg, #fffd63 180deg 270deg, #ff69ef 270deg 360deg)',
-  'conic-gradient(#fffd63 0deg 90deg, #ffb063 90deg 180deg, #ffffff 180deg 270deg, #63f2ff 270deg 360deg)',
-  'conic-gradient(#fffd41 0deg 90deg, #2af72e 90deg 180deg, #ff5400 180deg 270deg, #ffb063 270deg 360deg)',
-  'conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg)'
+  { c1: '#ff69ef', c2: '#63f2ff', c3: '#ffffff', c4: '#fffd63' }, // 配色一：粉、青、白、黄
+  { c1: '#63f2ff', c2: '#fffd63', c3: '#ffb063', c4: '#ffffff' }, // 配色二：青、黄、橙、白
+  { c1: '#ffb063', c2: '#fffd41', c3: '#2af72e', c4: '#ff5400' }, // 配色三：橙、黄、绿、红
+  { c1: '#fffd62', c2: '#ff5f10', c3: '#2dffee', c4: '#2af72e' }  // 配色四：黄、橙红、青、绿
 ];
 
 /**
@@ -615,8 +615,12 @@ function selectMusicFourColorPalette(index) {
   document.querySelectorAll('#fourColorPresets_music .four-color-disc').forEach((btn, idx) => {
     btn.classList.toggle('active', idx === index);
   });
-  const grad = FOUR_COLOR_PALETTES[index] || FOUR_COLOR_PALETTES[3];
-  document.documentElement.style.setProperty('--music-four-color-grad', grad);
+  const pal = FOUR_COLOR_PALETTES[index] || FOUR_COLOR_PALETTES[3];
+  const root = document.documentElement;
+  root.style.setProperty('--music-c1', pal.c1);
+  root.style.setProperty('--music-c2', pal.c2);
+  root.style.setProperty('--music-c3', pal.c3);
+  root.style.setProperty('--music-c4', pal.c4);
   updateStatusChips();
 }
 

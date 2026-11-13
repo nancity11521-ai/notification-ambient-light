@@ -655,18 +655,191 @@ body {
   100% { filter: hue-rotate(360deg) blur(12px); }
 }
 
-/* 6. 四色律动 (4-Color Rhythm) */
+/* 6. 四色律动 (4-Color Rhythm): 每次只显示一个颜色，每熄灭一次换一个颜色 */
 .fx-four_color .halo-core-ring {
-  background: var(--music-four-color-grad, conic-gradient(
-    #ff5f10 0deg 90deg,
-    #2dffee 90deg 180deg,
-    #2af72e 180deg 270deg,
-    #fffd62 270deg 360deg
-  ));
+  background-color: var(--music-c1, #fffd62);
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
-  animation: animHaloRotate 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
+  animation: animFourColorRhythmRing 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.fx-four_color .halo-ambient-glow {
+  background-color: var(--music-c1, #fffd62);
+  border-radius: 50%;
+  filter: blur(14px);
+  animation: animFourColorRhythmGlow 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes animFourColorRhythmRing {
+  0% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  11% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px var(--music-c1, #fffd62);
+  }
+  22% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  24.9% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+  }
+  25% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  36% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px var(--music-c2, #ff5f10);
+  }
+  47% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  49.9% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+  }
+  50% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  61% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px var(--music-c3, #2dffee);
+  }
+  72% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  74.9% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+  }
+  75% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  86% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 22px var(--music-c4, #2af72e);
+  }
+  97% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 transparent;
+  }
+  100% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes animFourColorRhythmGlow {
+  0% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  11% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+  22% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  24.9% {
+    background-color: var(--music-c1, #fffd62);
+    opacity: 0;
+  }
+  25% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  36% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+  47% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  49.9% {
+    background-color: var(--music-c2, #ff5f10);
+    opacity: 0;
+  }
+  50% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  61% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+  72% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  74.9% {
+    background-color: var(--music-c3, #2dffee);
+    opacity: 0;
+  }
+  75% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  86% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+  97% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  100% {
+    background-color: var(--music-c4, #2af72e);
+    opacity: 0;
+    transform: scale(0.65);
+  }
 }
 
 
@@ -751,12 +924,6 @@ body {
 }
 .four-disc-3.active::before {
   background: conic-gradient(#ff5f10 0deg 90deg, #2dffee 90deg 180deg, #2af72e 180deg 270deg, #fffd62 270deg 360deg);
-}
-
-.fx-four_color .halo-ambient-glow {
-  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
-  animation: animGlowBreathing 1.8s infinite;
-  opacity: 0.45;
 }
 
 /* 关机/总开关关闭时的暗色状态与发光环熄灭 */
