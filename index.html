@@ -395,31 +395,23 @@
               <span class="current-color-hint" id="colorHint_call_main" data-i18n="color_dark_green">深绿</span>
             </div>
 
-            <!-- 5个单色快捷圆圈 -->
+            <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
             <div class="color-presets-row" id="colorPresets_call_main">
-              <div class="color-circle-btn" data-color="#55c800" data-name-key="color_grass_green" onclick="selectSceneColor('call', '#55c800', 'color_grass_green', 'main')">
-                <span class="swatch" style="background-color: #55c800;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#fca86c" data-name-key="color_peach_orange" onclick="selectSceneColor('call', '#fca86c', 'color_peach_orange', 'main')">
-                <span class="swatch" style="background-color: #fca86c;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#7ba5e4" data-name-key="color_fog_blue" onclick="selectSceneColor('call', '#7ba5e4', 'color_fog_blue', 'main')">
-                <span class="swatch" style="background-color: #7ba5e4;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#61e3d7" data-name-key="color_cyan_blue" onclick="selectSceneColor('call', '#61e3d7', 'color_cyan_blue', 'main')">
-                <span class="swatch" style="background-color: #61e3d7;"></span>
-              </div>
-              <div class="color-circle-btn active" data-color="#00a838" data-name-key="color_dark_green" onclick="selectSceneColor('call', '#00a838', 'color_dark_green', 'main')">
-                <span class="swatch" style="background-color: #00a838;"></span>
-              </div>
+              <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('call', '#00e600', 'color_grass_green', 'main')" aria-label="绿色"></button>
+              <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('call', '#ffa850', 'color_peach_orange', 'main')" aria-label="橙色"></button>
+              <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('call', '#4ca8ff', 'color_fog_blue', 'main')" aria-label="蓝色"></button>
+              <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('call', '#00f5e6', 'color_cyan_blue', 'main')" aria-label="青色"></button>
+              <div class="color-preset-divider"></div>
+              <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('call', 'rainbow', 'main')" aria-label="彩色律动"></button>
+              <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('call', 'four_color', 'main')" aria-label="四色律动"></button>
             </div>
 
             <!-- 全彩拾色大圆盘 -->
             <div class="color-wheel-wrapper">
               <div class="color-wheel-box" id="colorWheel_call_main" onclick="pickSceneWheelColor(event, 'call', 'main')">
                 <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
-                <div class="wheel-picker-thumb" id="wheelThumb_call_main" style="left: 28%; top: 78%;">
-                  <span class="thumb-core" id="thumbCore_call_main" style="background-color: #00a838;"></span>
+                <div class="wheel-picker-thumb" id="wheelThumb_call_main" style="left: 35%; top: 90%;">
+                  <span class="thumb-core" id="thumbCore_call_main" style="background-color: #00e600;"></span>
                 </div>
               </div>
             </div>
@@ -442,31 +434,23 @@
               <span class="current-color-hint" id="colorHint_call_incall" data-i18n="color_dark_green">深绿</span>
             </div>
 
-            <!-- 5个单色快捷圆圈 -->
+            <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
             <div class="color-presets-row" id="colorPresets_call_incall">
-              <div class="color-circle-btn" data-color="#55c800" data-name-key="color_grass_green" onclick="selectSceneColor('call', '#55c800', 'color_grass_green', 'incall')">
-                <span class="swatch" style="background-color: #55c800;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#fca86c" data-name-key="color_peach_orange" onclick="selectSceneColor('call', '#fca86c', 'color_peach_orange', 'incall')">
-                <span class="swatch" style="background-color: #fca86c;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#7ba5e4" data-name-key="color_fog_blue" onclick="selectSceneColor('call', '#7ba5e4', 'color_fog_blue', 'incall')">
-                <span class="swatch" style="background-color: #7ba5e4;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#61e3d7" data-name-key="color_cyan_blue" onclick="selectSceneColor('call', '#61e3d7', 'color_cyan_blue', 'incall')">
-                <span class="swatch" style="background-color: #61e3d7;"></span>
-              </div>
-              <div class="color-circle-btn active" data-color="#00a838" data-name-key="color_dark_green" onclick="selectSceneColor('call', '#00a838', 'color_dark_green', 'incall')">
-                <span class="swatch" style="background-color: #00a838;"></span>
-              </div>
+              <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('call', '#00e600', 'color_grass_green', 'incall')" aria-label="绿色"></button>
+              <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('call', '#ffa850', 'color_peach_orange', 'incall')" aria-label="橙色"></button>
+              <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('call', '#4ca8ff', 'color_fog_blue', 'incall')" aria-label="蓝色"></button>
+              <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('call', '#00f5e6', 'color_cyan_blue', 'incall')" aria-label="青色"></button>
+              <div class="color-preset-divider"></div>
+              <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('call', 'rainbow', 'incall')" aria-label="彩色律动"></button>
+              <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('call', 'four_color', 'incall')" aria-label="四色律动"></button>
             </div>
 
             <!-- 全彩拾色大圆盘 -->
             <div class="color-wheel-wrapper">
               <div class="color-wheel-box" id="colorWheel_call_incall" onclick="pickSceneWheelColor(event, 'call', 'incall')">
                 <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
-                <div class="wheel-picker-thumb" id="wheelThumb_call_incall" style="left: 28%; top: 78%;">
-                  <span class="thumb-core" id="thumbCore_call_incall" style="background-color: #00a838;"></span>
+                <div class="wheel-picker-thumb" id="wheelThumb_call_incall" style="left: 35%; top: 90%;">
+                  <span class="thumb-core" id="thumbCore_call_incall" style="background-color: #00e600;"></span>
                 </div>
               </div>
             </div>
@@ -658,31 +642,23 @@
               <span class="current-color-hint" id="colorHint_notification_main" data-i18n="color_dark_green">深绿</span>
             </div>
 
-            <!-- 5个单色快捷圆圈 -->
+            <!-- 6个中空光环预设 + 垂直蓝色分割线 -->
             <div class="color-presets-row" id="colorPresets_notification_main">
-              <div class="color-circle-btn" data-color="#55c800" data-name-key="color_grass_green" onclick="selectSceneColor('notification', '#55c800', 'color_grass_green', 'main')">
-                <span class="swatch" style="background-color: #55c800;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#fca86c" data-name-key="color_peach_orange" onclick="selectSceneColor('notification', '#fca86c', 'color_peach_orange', 'main')">
-                <span class="swatch" style="background-color: #fca86c;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#7ba5e4" data-name-key="color_fog_blue" onclick="selectSceneColor('notification', '#7ba5e4', 'color_fog_blue', 'main')">
-                <span class="swatch" style="background-color: #7ba5e4;"></span>
-              </div>
-              <div class="color-circle-btn" data-color="#61e3d7" data-name-key="color_cyan_blue" onclick="selectSceneColor('notification', '#61e3d7', 'color_cyan_blue', 'main')">
-                <span class="swatch" style="background-color: #61e3d7;"></span>
-              </div>
-              <div class="color-circle-btn active" data-color="#00a838" data-name-key="color_dark_green" onclick="selectSceneColor('notification', '#00a838', 'color_dark_green', 'main')">
-                <span class="swatch" style="background-color: #00a838;"></span>
-              </div>
+              <button type="button" class="color-ring-btn ring-green active" data-color="#00e600" data-name-key="color_grass_green" onclick="selectSceneColor('notification', '#00e600', 'color_grass_green', 'main')" aria-label="绿色"></button>
+              <button type="button" class="color-ring-btn ring-orange" data-color="#ffa850" data-name-key="color_peach_orange" onclick="selectSceneColor('notification', '#ffa850', 'color_peach_orange', 'main')" aria-label="橙色"></button>
+              <button type="button" class="color-ring-btn ring-blue" data-color="#4ca8ff" data-name-key="color_fog_blue" onclick="selectSceneColor('notification', '#4ca8ff', 'color_fog_blue', 'main')" aria-label="蓝色"></button>
+              <button type="button" class="color-ring-btn ring-cyan" data-color="#00f5e6" data-name-key="color_cyan_blue" onclick="selectSceneColor('notification', '#00f5e6', 'color_cyan_blue', 'main')" aria-label="青色"></button>
+              <div class="color-preset-divider"></div>
+              <button type="button" class="color-ring-btn ring-rainbow" data-effect="color_rhythm" data-name-key="effect_color_rhythm" onclick="selectSceneColorRing('notification', 'rainbow', 'main')" aria-label="彩色律动"></button>
+              <button type="button" class="color-ring-btn ring-four-color" data-effect="four_color" data-name-key="effect_four_color" onclick="selectSceneColorRing('notification', 'four_color', 'main')" aria-label="四色律动"></button>
             </div>
 
             <!-- 全彩拾色大圆盘 -->
             <div class="color-wheel-wrapper">
               <div class="color-wheel-box" id="colorWheel_notification_main" onclick="pickSceneWheelColor(event, 'notification', 'main')">
                 <img src="./assets/color_wheel_hd.png" alt="Color Wheel" class="wheel-hd-img">
-                <div class="wheel-picker-thumb" id="wheelThumb_notification_main" style="left: 28%; top: 78%;">
-                  <span class="thumb-core" id="thumbCore_notification_main" style="background-color: #00a838;"></span>
+                <div class="wheel-picker-thumb" id="wheelThumb_notification_main" style="left: 35%; top: 90%;">
+                  <span class="thumb-core" id="thumbCore_notification_main" style="background-color: #00e600;"></span>
                 </div>
               </div>
             </div>

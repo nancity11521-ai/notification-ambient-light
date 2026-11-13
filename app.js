@@ -331,17 +331,17 @@ const state = {
     call: {
       enabled: true,
       effect: 'breathing',
-      color: '#00a838',
-      colorKey: 'color_dark_green',
+      color: '#00e600',
+      colorKey: 'color_grass_green',
       inCallBreathe: true,
-      inCallColor: '#00a838',
-      inCallColorKey: 'color_dark_green'
+      inCallColor: '#00e600',
+      inCallColorKey: 'color_grass_green'
     },
     notification: {
       enabled: true,
       effect: 'breathing',
-      color: '#00a838',
-      colorKey: 'color_dark_green'
+      color: '#00e600',
+      colorKey: 'color_grass_green'
     },
     charging: {
       enabled: true,
@@ -452,7 +452,11 @@ function navigateTo(pageId) {
   const curNavBtn = document.getElementById(`btnNav_${pageId}`);
   if (curNavBtn) curNavBtn.classList.add('active');
 
-  // 5. 更新状态栏胶囊
+  // 5. 更新状态栏胶囊与当前场景的发光环颜色动效
+  if (state.scenes[pageId]) {
+    applyHaloColor(state.scenes[pageId].color || '#00e600');
+    applySceneEffectToMockup(pageId, state.scenes[pageId].effect);
+  }
   updateStatusChips();
 
   // 6. 检查胶囊溢出状态
@@ -492,7 +496,29 @@ function selectSceneEffect(sceneId, effectName) {
   // 2. 更新该场景顶部 DYNAMIC SOUND 设备动效
   applySceneEffectToMockup(sceneId, effectName);
 
-  // 3. 更新提示文案
+  // 3. 同步联动颜色选择中的光环预设选中态（单色 vs 彩色 vs 四色）
+  ['main', 'incall'].forEach(subKey => {
+    const boxId = `${sceneId}_${subKey}`;
+    const presetsRow = document.getElementById(`colorPresets_${boxId}`);
+    if (presetsRow) {
+      if (effectName === 'color_rhythm') {
+        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
+        const rainbowBtn = presetsRow.querySelector('.color-ring-btn.ring-rainbow');
+        if (rainbowBtn) rainbowBtn.classList.add('active');
+      } else if (effectName === 'four_color') {
+        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
+        const fourBtn = presetsRow.querySelector('.color-ring-btn.ring-four-color');
+        if (fourBtn) fourBtn.classList.add('active');
+      } else {
+        const curColor = subKey === 'incall' ? scData.inCallColor : scData.color;
+        presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-color') === curColor);
+        });
+      }
+    }
+  });
+
+  // 4. 更新提示文案
   const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
   const hintElem = document.getElementById(`effectHint_${sceneId}`);
   if (hintElem && dict[`effect_${effectName}`]) {
@@ -530,7 +556,29 @@ function applySceneEffectToMockup(sceneId, effectName) {
 }
 
 /**
- * 场景内点击 5 个快捷颜色圆圈
+ * 点击颜色选择中的多色圆环（彩色律动 / 四色律动）
+ */
+function selectSceneColorRing(sceneId, ringType, subKey = 'main') {
+  const scData = state.scenes[sceneId];
+  if (!scData) return;
+
+  const boxId = `${sceneId}_${subKey}`;
+  const presetsRow = document.getElementById(`colorPresets_${boxId}`);
+  if (presetsRow) {
+    presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => btn.classList.remove('active'));
+    const targetBtn = presetsRow.querySelector(`.color-ring-btn.ring-${ringType}`);
+    if (targetBtn) targetBtn.classList.add('active');
+  }
+
+  if (ringType === 'rainbow') {
+    selectSceneEffect(sceneId, 'color_rhythm');
+  } else if (ringType === 'four_color') {
+    selectSceneEffect(sceneId, 'four_color');
+  }
+}
+
+/**
+ * 场景内点击纯色中空环预设
  */
 function selectSceneColor(sceneId, colorHex, colorKey, subKey = 'main') {
   const scData = state.scenes[sceneId];
@@ -542,13 +590,24 @@ function selectSceneColor(sceneId, colorHex, colorKey, subKey = 'main') {
   } else {
     scData.color = colorHex;
     scData.colorKey = colorKey;
+    // 若原先是彩色律动或四色律动，切换到纯色时恢复单色呼吸效果
+    if (scData.effect === 'color_rhythm' || scData.effect === 'four_color') {
+      scData.effect = 'breathing';
+      applySceneEffectToMockup(sceneId, 'breathing');
+      const track = document.getElementById(`capsulesTrack_${sceneId}`);
+      if (track) {
+        track.querySelectorAll('.capsule-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-effect') === 'breathing');
+        });
+      }
+    }
   }
 
-  // 1. 更新预设圆圈高亮
+  // 1. 更新预设圆环高亮
   const boxId = `${sceneId}_${subKey}`;
   const presetsRow = document.getElementById(`colorPresets_${boxId}`);
   if (presetsRow) {
-    presetsRow.querySelectorAll('.color-circle-btn').forEach(btn => {
+    presetsRow.querySelectorAll('.color-ring-btn').forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-color') === colorHex);
     });
   }
@@ -613,14 +672,26 @@ function pickSceneWheelColor(e, sceneId, subKey = 'main') {
   } else {
     scData.color = pickedHex;
     scData.colorKey = 'color_custom';
+    if (scData.effect === 'color_rhythm' || scData.effect === 'four_color') {
+      scData.effect = 'breathing';
+      applySceneEffectToMockup(sceneId, 'breathing');
+      const track = document.getElementById(`capsulesTrack_${sceneId}`);
+      if (track) {
+        track.querySelectorAll('.capsule-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-effect') === 'breathing');
+        });
+      }
+    }
   }
 
   if (thumbCore) thumbCore.style.backgroundColor = pickedHex;
 
-  // 清除快捷圆圈选中
+  // 联动快捷圆环选中态
   const presetsRow = document.getElementById(`colorPresets_${boxId}`);
   if (presetsRow) {
-    presetsRow.querySelectorAll('.color-circle-btn').forEach(b => b.classList.remove('active'));
+    presetsRow.querySelectorAll('.color-ring-btn').forEach(b => {
+      b.classList.toggle('active', b.getAttribute('data-color') === pickedHex);
+    });
   }
 
   const dict = I18N_LOCALES[state.lang] || I18N_LOCALES['zh-CN'];
@@ -633,13 +704,12 @@ function pickSceneWheelColor(e, sceneId, subKey = 'main') {
 
 function updateWheelThumb(boxId, colorHex) {
   const presetPositions = {
-    '#55c800': { left: '26%', top: '78%' },
-    '#fca86c': { left: '80%', top: '74%' },
-    '#7ba5e4': { left: '22%', top: '30%' },
-    '#61e3d7': { left: '16%', top: '55%' },
-    '#00a838': { left: '32%', top: '84%' }
+    '#00e600': { left: '35%', top: '90%' },
+    '#ffa850': { left: '80%', top: '74%' },
+    '#4ca8ff': { left: '22%', top: '30%' },
+    '#00f5e6': { left: '16%', top: '55%' }
   };
-  const pos = presetPositions[colorHex] || { left: '32%', top: '84%' };
+  const pos = presetPositions[colorHex] || { left: '35%', top: '90%' };
   const thumb = document.getElementById(`wheelThumb_${boxId}`);
   const thumbCore = document.getElementById(`thumbCore_${boxId}`);
   if (thumb) {
