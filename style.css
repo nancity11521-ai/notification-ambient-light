@@ -27,160 +27,76 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #121316;
+  background-color: #ebedf2;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 16px;
-  gap: 32px;
+  padding: 20px 16px;
+  margin: 0;
+  position: relative;
 }
 
 /* ==========================================================================
-   桌面端多语言/排版控制台（左侧悬浮调试面板）
+   桌面端悬浮语言栏 (仅在宽屏展示，不侵入移动端 APP)
    ========================================================================== */
-.demo-controller {
-  width: 320px;
-  flex-shrink: 0;
-}
-
-.controller-card {
-  background: #1c1e22;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 24px 20px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
-  color: #e5e7eb;
-}
-
-.controller-header {
-  margin-bottom: 20px;
-}
-
-.controller-badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 600;
-  color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.controller-header h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.ctrl-group {
-  margin-bottom: 20px;
-}
-
-.ctrl-group label {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  color: #9ca3af;
-  margin-bottom: 8px;
-}
-
-.select-wrapper select {
-  width: 100%;
-  padding: 10px 14px;
-  background: #272a30;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  color: #ffffff;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.select-wrapper select:focus {
-  border-color: #38bdf8;
-}
-
-.mode-toggles {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.mode-btn {
+.desktop-lang-bar {
+  position: fixed;
+  top: 16px;
+  right: 20px;
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 100%;
-  padding: 10px 14px;
-  background: #272a30;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  color: #9ca3af;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 7px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
   font-size: 13px;
-  cursor: pointer;
+  color: #4b5563;
+  z-index: 1000;
   transition: all 0.2s ease;
 }
 
-.mode-btn:hover {
-  background: #31353d;
-  color: #ffffff;
+.desktop-lang-bar:hover {
+  background: #ffffff;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
 }
 
-.mode-btn.active {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: #38bdf8;
-  color: #38bdf8;
+.desktop-lang-bar select {
+  border: none;
+  background: transparent;
+  font-size: 13px;
   font-weight: 500;
-}
-
-.ctrl-tip {
-  font-size: 11px;
-  line-height: 1.5;
-  color: #6b7280;
-  margin-top: 8px;
-}
-
-.state-chip-box {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.state-chip {
-  font-size: 12px;
-  background: #2a2e36;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 4px 10px;
-  border-radius: 6px;
-  color: #d1d5db;
+  color: #111827;
+  cursor: pointer;
+  outline: none;
 }
 
 /* ==========================================================================
    移动端拟真外框（真机视口模型）
    ========================================================================== */
 .phone-viewport {
-  width: 375px;
-  height: 760px;
-  background: #000000;
+  width: 412px;
+  height: 890px;
+  max-height: calc(100vh - 40px);
+  background: #1e2229;
   border-radius: 46px;
   padding: 10px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7),
-              0 0 0 1px rgba(255, 255, 255, 0.12),
-              inset 0 0 4px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 28px 80px -15px rgba(0, 0, 0, 0.22),
+              0 0 0 1px rgba(0, 0, 0, 0.08),
+              inset 0 0 0 2px rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .phone-frame {
   flex: 1;
   background-color: var(--bg-page);
-  border-radius: 38px;
+  border-radius: 36px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -190,7 +106,7 @@ body {
 /* 顶部状态栏 */
 .status-bar {
   height: 40px;
-  padding: 0 22px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -199,6 +115,44 @@ body {
   font-weight: 600;
   letter-spacing: -0.2px;
   user-select: none;
+  flex-shrink: 0;
+  background-color: var(--bg-page);
+  z-index: 30;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-gear-btn {
+  background: none;
+  border: none;
+  padding: 2px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.status-gear-btn:hover {
+  opacity: 1;
+}
+
+.wifi-indicator {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.wifi-badge {
+  font-size: 8px;
+  font-weight: 700;
+  margin-left: 1px;
+  line-height: 1;
 }
 
 .status-icons {
@@ -236,40 +190,42 @@ body {
   margin-right: 1px;
 }
 
-/* 顶部导航栏 */
-.nav-bar {
-  height: 44px;
-  padding: 0 16px;
+/* 二级页面顶部标题栏 */
+.app-header {
+  height: 48px;
   display: flex;
   align-items: center;
-  position: relative;
+  padding: 0 16px;
+  gap: 6px;
+  background-color: var(--bg-page);
+  flex-shrink: 0;
+  z-index: 20;
 }
 
 .btn-back {
   background: none;
   border: none;
-  padding: 6px;
+  padding: 8px 6px;
   margin-left: -6px;
   cursor: pointer;
   color: #111827;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.15s;
+  border-radius: 50%;
+  transition: background-color 0.15s;
 }
 
 .btn-back:active {
-  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.06);
 }
 
 .nav-title {
-  position: absolute;
-  left: 54px;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 600;
   color: #111827;
   letter-spacing: -0.3px;
-  transition: opacity 0.2s ease;
+  margin: 0;
 }
 
 /* 多场景页面视图容器（支持主页与各功能二级页平滑切换） */
@@ -1222,29 +1178,128 @@ input:checked + .toggle-slider:before {
   border-radius: 2px;
 }
 
+
 /* ==========================================================================
-   响应式断点适配
+   移动端语言切换底部抽屉 (Bottom Sheet)
    ========================================================================== */
-@media (max-width: 768px) {
+.lang-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lang-modal-backdrop.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lang-bottom-sheet {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 16px 20px 32px 20px;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(100%);
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.lang-modal-backdrop.active .lang-bottom-sheet {
+  transform: translateY(0);
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  margin: 0 auto 14px auto;
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.sheet-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.sheet-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.sheet-lang-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sheet-lang-btn {
+  width: 100%;
+  padding: 12px 14px;
+  background: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sheet-lang-btn:hover {
+  background: #f0f2f5;
+}
+
+.sheet-lang-btn.active {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   响应式断点适配：移动端 100% 全屏原生 APP 体验
+   ========================================================================== */
+@media (max-width: 600px) {
   body {
     padding: 0;
-    background-color: #000;
-    flex-direction: column;
-    align-items: center;
+    background-color: var(--bg-page);
+    align-items: stretch;
   }
-  .demo-controller {
-    width: 100%;
-    max-width: 375px;
-    padding: 12px;
+  .desktop-lang-bar {
+    display: none !important;
   }
   .phone-viewport {
     width: 100vw;
     height: 100vh;
+    max-height: 100vh;
     border-radius: 0;
     padding: 0;
+    background: transparent;
     box-shadow: none;
   }
   .phone-frame {
     border-radius: 0;
+    width: 100%;
+    height: 100%;
   }
 }
+

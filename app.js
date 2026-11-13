@@ -342,6 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
     state.lang = params.get('lang');
     const select = document.getElementById('langSelect');
     if (select) select.value = state.lang;
+    const desktopSelect = document.getElementById('desktopLangSelect');
+    if (desktopSelect) desktopSelect.value = state.lang;
   }
 
   if (params.has('page') && state.scenes[params.get('page')]) {
@@ -393,7 +395,11 @@ function navigateTo(pageId) {
     targetView.scrollTop = 0;
   }
 
-  // 2. 控制顶部返回按钮
+  // 2. 控制顶部导航栏显隐（主页隐藏导航栏直入硬件模块，二级页面显示返回箭头与标题）
+  const navBar = document.getElementById('mainNavBar');
+  if (navBar) {
+    navBar.style.display = pageId === 'home' ? 'none' : 'flex';
+  }
   const btnBack = document.getElementById('btnNavBack');
   if (btnBack) {
     btnBack.style.display = pageId === 'home' ? 'none' : 'flex';
@@ -703,7 +709,43 @@ function applyHaloColor(hexColor) {
 function switchLanguage(langCode) {
   if (!I18N_LOCALES[langCode]) return;
   state.lang = langCode;
+
+  const desktopSelect = document.getElementById('desktopLangSelect');
+  if (desktopSelect) desktopSelect.value = langCode;
+
+  document.querySelectorAll('.sheet-lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-lang') === langCode);
+  });
+
   updateLanguageDisplay();
+}
+
+/**
+ * 移动端语言选择底部抽屉
+ */
+function toggleLanguageSheet(show) {
+  const backdrop = document.getElementById('langModalBackdrop');
+  if (!backdrop) return;
+  if (show === undefined) {
+    show = !backdrop.classList.contains('active');
+  }
+  if (show) {
+    backdrop.style.display = 'flex';
+    void backdrop.offsetWidth;
+    backdrop.classList.add('active');
+  } else {
+    backdrop.classList.remove('active');
+    setTimeout(() => {
+      if (!backdrop.classList.contains('active')) {
+        backdrop.style.display = 'none';
+      }
+    }, 250);
+  }
+}
+
+function selectAppLanguage(langCode) {
+  switchLanguage(langCode);
+  toggleLanguageSheet(false);
 }
 
 /**
