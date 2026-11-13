@@ -39,16 +39,24 @@ body {
 }
 
 /* ==========================================================================
-   桌面端悬浮语言栏 (仅在宽屏展示，不侵入移动端 APP)
+   桌面端悬浮控制工具栏 (语言切换 + 项目筛选与示意图更换)
    ========================================================================== */
-.desktop-lang-bar {
+.desktop-floating-tools {
   position: fixed;
   top: 16px;
   right: 20px;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.desktop-tool-pill {
+  display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: 7px 14px;
@@ -56,16 +64,20 @@ body {
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.05);
   font-size: 13px;
   color: #4b5563;
-  z-index: 1000;
   transition: all 0.2s ease;
 }
 
-.desktop-lang-bar:hover {
+.desktop-tool-pill:hover {
   background: #ffffff;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
 }
 
-.desktop-lang-bar select {
+.desktop-tool-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.desktop-tool-pill select {
   border: none;
   background: transparent;
   font-size: 13px;
@@ -73,6 +85,53 @@ body {
   color: #111827;
   cursor: pointer;
   outline: none;
+}
+
+.btn-reset-diagram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-left: 2px;
+  padding: 0;
+}
+
+.btn-reset-diagram:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* 浮动轻量 Toast 提示 */
+.floating-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(17, 24, 39, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  padding: 9px 18px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 500;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 9999;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.floating-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ==========================================================================
@@ -1763,6 +1822,7 @@ input:checked + .toggle-slider:before {
     background-color: var(--bg-page);
     align-items: stretch;
   }
+  .desktop-floating-tools,
   .desktop-lang-bar {
     display: none !important;
   }

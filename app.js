@@ -55,6 +55,7 @@ const I18N_LOCALES = {
     active_time_scheduled: '定时启用',
     time_start: '开始',
     time_end: '结束',
+    project_label: '项目',
   },
   'en-US': {
     page_home: 'Dynamic Pulse',
@@ -107,6 +108,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'Scheduled',
     time_start: 'Start',
     time_end: 'End',
+    project_label: 'Project',
   },
   'de-DE': {
     page_home: 'Farbpulsieren',
@@ -159,6 +161,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'Zeitgesteuert',
     time_start: 'Start',
     time_end: 'Ende',
+    project_label: 'Projekt',
   },
   'es-ES': {
     page_home: 'Pulso dinámico',
@@ -211,6 +214,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'Programado',
     time_start: 'Inicio',
     time_end: 'Fin',
+    project_label: 'Proyecto',
   },
   'ru-RU': {
     page_home: 'Динамический пульс',
@@ -263,6 +267,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'По расписанию',
     time_start: 'Начало',
     time_end: 'Конец',
+    project_label: 'Проект',
   },
   'fr-FR': {
     page_home: 'Pulsation dynamique',
@@ -315,6 +320,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'Planifié',
     time_start: 'Début',
     time_end: 'Fin',
+    project_label: 'Projet',
   },
   'ja-JP': {
     page_home: 'ダイナミックパルス',
@@ -367,6 +373,7 @@ const I18N_LOCALES = {
     active_time_scheduled: 'スケジュール有効',
     time_start: '開始',
     time_end: '終了',
+    project_label: 'プロジェクト',
   }
 };
 
@@ -374,6 +381,9 @@ const I18N_LOCALES = {
 const state = {
   lang: 'zh-CN',
   currentPage: 'home',
+  currentProject: 'GQ5023',
+  projects: ['GQ5023'],
+  customDiagrams: {},
   globalBrightness: 80,
   activeStyle: 'blue',
   pulseOpt: 'opt_d',
@@ -508,6 +518,9 @@ document.addEventListener('DOMContentLoaded', () => {
   startRealtimeClock();
   setGlobalBrightness(state.globalBrightness);
   toggleMasterPulse(state.scenes.home.enabled);
+
+  // 初始化项目筛选与自定义示意图管理系统
+  initProjectSystem();
 
   // 绑定所有胶囊滚动容器的双向羽化渐隐监听
   initAllScrollersOverflow();
@@ -944,7 +957,7 @@ function toggleMasterPulse(checked) {
   }
 
   if (mockupImg) {
-    mockupImg.src = checked ? './assets/device_clean.png' : './assets/device_clean_off.png';
+    mockupImg.src = getProjectMockupSrc('home', !checked);
   }
 
   // 禁用/启用受控控件
@@ -1009,10 +1022,10 @@ function toggleSceneSwitch(sceneId, checked) {
   if (mockup) {
     if (!checked) {
       mockup.classList.add('fx-off');
-      if (mockupImg) mockupImg.src = './assets/device_clean_off.png';
+      if (mockupImg) mockupImg.src = getProjectMockupSrc(sceneId, true);
     } else {
       mockup.classList.remove('fx-off');
-      if (mockupImg) mockupImg.src = './assets/device_clean.png';
+      if (mockupImg) mockupImg.src = getProjectMockupSrc(sceneId, false);
       applySceneEffectToMockup(sceneId, scData.effect);
     }
   }
@@ -1176,6 +1189,7 @@ function switchLanguage(langCode) {
   });
 
   updateLanguageDisplay();
+  renderProjectOptions();
 }
 
 /**
@@ -1470,4 +1484,223 @@ function toggleAllApps(checked) {
     const sw = document.getElementById(`switch_app_${a.id}`);
     if (sw) sw.checked = checked;
   });
+}
+
+// ==========================================================================
+// 项目筛选与示意图管理系统
+// ==========================================================================
+
+/**
+ * 初始化项目筛选器与示意图缓存
+ */
+function initProjectSystem() {
+  try {
+    const savedProjects = localStorage.getItem('ambient_light_projects_list');
+    if (savedProjects) {
+      const parsed = JSON.parse(savedProjects);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        state.projects = parsed;
+      }
+    }
+    const savedCustom = localStorage.getItem('ambient_light_custom_diagrams');
+    if (savedCustom) {
+      state.customDiagrams = JSON.parse(savedCustom) || {};
+    }
+    const savedCurrent = localStorage.getItem('ambient_light_current_project');
+    if (savedCurrent && state.projects.includes(savedCurrent)) {
+      state.currentProject = savedCurrent;
+    }
+  } catch (e) {
+    console.warn('Error reading project storage', e);
+  }
+
+  renderProjectOptions();
+  updateResetDiagramButtonVisibility();
+  updateAllMockupImages();
+}
+
+/**
+ * 渲染项目下拉选项列表
+ */
+function renderProjectOptions() {
+  const select = document.getElementById('desktopProjectSelect');
+  if (!select) return;
+  const currentVal = state.currentProject;
+  const isZh = state.lang === 'zh-CN';
+  select.innerHTML = '';
+
+  state.projects.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p;
+    opt.textContent = p;
+    select.appendChild(opt);
+  });
+
+  const optUpload = document.createElement('option');
+  optUpload.value = '__upload__';
+  optUpload.textContent = isZh ? '📁 更换示意图...' : '📁 Change Diagram...';
+  select.appendChild(optUpload);
+
+  const optNew = document.createElement('option');
+  optNew.value = '__new_project__';
+  optNew.textContent = isZh ? '➕ 新增项目型号...' : '➕ New Project...';
+  select.appendChild(optNew);
+
+  select.value = currentVal;
+}
+
+/**
+ * 响应项目下拉菜单选择变化
+ */
+function handleProjectDropdownChange(val) {
+  const select = document.getElementById('desktopProjectSelect');
+  if (val === '__upload__') {
+    if (select) select.value = state.currentProject;
+    const fileInput = document.getElementById('projectDiagramUploader');
+    if (fileInput) fileInput.click();
+    return;
+  }
+  if (val === '__new_project__') {
+    if (select) select.value = state.currentProject;
+    const isZh = state.lang === 'zh-CN';
+    const newName = prompt(isZh ? '请输入新项目型号名称 (如 GQ5024):' : 'Enter new project model name (e.g. GQ5024):', '');
+    if (newName && newName.trim()) {
+      addNewProject(newName.trim());
+    }
+    return;
+  }
+  switchProject(val);
+}
+
+/**
+ * 切换当前项目型号
+ */
+function switchProject(projectId) {
+  state.currentProject = projectId;
+  try {
+    localStorage.setItem('ambient_light_current_project', projectId);
+  } catch (e) {}
+  const select = document.getElementById('desktopProjectSelect');
+  if (select) select.value = projectId;
+  updateResetDiagramButtonVisibility();
+  updateAllMockupImages();
+}
+
+/**
+ * 新增项目型号
+ */
+function addNewProject(projectName) {
+  if (!state.projects.includes(projectName)) {
+    state.projects.push(projectName);
+    try {
+      localStorage.setItem('ambient_light_projects_list', JSON.stringify(state.projects));
+    } catch (e) {
+      console.warn('Failed to save project list', e);
+    }
+    renderProjectOptions();
+  }
+  switchProject(projectName);
+  showUploadToast((state.lang === 'zh-CN' ? '已创建项目 ' : 'Project created: ') + projectName);
+}
+
+/**
+ * 处理用户上传自定义示意图
+ */
+function handleProjectDiagramUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    state.customDiagrams[state.currentProject] = dataUrl;
+    try {
+      localStorage.setItem('ambient_light_custom_diagrams', JSON.stringify(state.customDiagrams));
+    } catch (err) {
+      console.warn('localStorage quota exceeded for custom diagram', err);
+    }
+    updateResetDiagramButtonVisibility();
+    updateAllMockupImages();
+    showUploadToast((state.lang === 'zh-CN' ? '已更新 ' : 'Updated diagram for ') + state.currentProject);
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+/**
+ * 恢复当前项目的默认示意图
+ */
+function resetCurrentProjectDiagram() {
+  if (state.customDiagrams[state.currentProject]) {
+    delete state.customDiagrams[state.currentProject];
+    try {
+      localStorage.setItem('ambient_light_custom_diagrams', JSON.stringify(state.customDiagrams));
+    } catch (e) {
+      console.warn(e);
+    }
+    updateResetDiagramButtonVisibility();
+    updateAllMockupImages();
+    showUploadToast((state.lang === 'zh-CN' ? '已恢复 ' : 'Reset diagram for ') + state.currentProject + (state.lang === 'zh-CN' ? ' 默认示意图' : ' default diagram'));
+  }
+}
+
+/**
+ * 根据是否包含自定义示意图决定是否显示恢复默认按钮
+ */
+function updateResetDiagramButtonVisibility() {
+  const btn = document.getElementById('btnResetProjectDiagram');
+  if (!btn) return;
+  const hasCustom = !!state.customDiagrams[state.currentProject];
+  btn.style.display = hasCustom ? 'inline-flex' : 'none';
+}
+
+/**
+ * 获取指定场景和通断状态下的示意图路径
+ */
+function getProjectMockupSrc(sceneId, isOff) {
+  const customImg = state.customDiagrams[state.currentProject];
+  if (customImg) {
+    return customImg;
+  }
+  return isOff ? './assets/device_clean_off.png' : './assets/device_clean.png';
+}
+
+/**
+ * 更新所有场景中的物理示意图
+ */
+function updateAllMockupImages() {
+  const scenes = ['home', 'call', 'notification', 'charging', 'music', 'power'];
+  scenes.forEach(sceneId => {
+    const mockup = document.getElementById(`mockup_${sceneId}`);
+    if (!mockup) return;
+    const img = mockup.querySelector('.device-clean-img');
+    if (!img) return;
+
+    let isOff = false;
+    if (sceneId === 'home') {
+      isOff = !state.scenes.home.enabled;
+    } else {
+      isOff = !state.scenes[sceneId]?.enabled;
+    }
+    img.src = getProjectMockupSrc(sceneId, isOff);
+  });
+}
+
+/**
+ * 浮动 Toast 提示
+ */
+function showUploadToast(message) {
+  let toast = document.getElementById('floatingUploadToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'floatingUploadToast';
+    toast.className = 'floating-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2200);
 }
