@@ -1,0 +1,1137 @@
+/* ==========================================================================
+   全局重置与响应式基准
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg-page: #f2f4f7;
+  --card-bg: #ffffff;
+  --text-main: #111827;
+  --text-sub: #6b7280;
+  --text-muted: #9ca3af;
+  --border-color: #f1f2f4;
+  --primary-blue: #007aff;
+  --tech-blue: #00e5cc;
+  --capsule-bg: #f3f4f7;
+  --capsule-bg-hover: #e8eaee;
+  --capsule-active-bg: #ffffff;
+  --capsule-active-border: #2563eb;
+  --capsule-text-dim: #4b5563;
+  --capsule-text-active: #1d4ed8;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #121316;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+  gap: 32px;
+}
+
+/* ==========================================================================
+   桌面端多语言/排版控制台（左侧悬浮调试面板）
+   ========================================================================== */
+.demo-controller {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.controller-card {
+  background: #1c1e22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  color: #e5e7eb;
+}
+
+.controller-header {
+  margin-bottom: 20px;
+}
+
+.controller-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.controller-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ctrl-group {
+  margin-bottom: 20px;
+}
+
+.ctrl-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.select-wrapper select {
+  width: 100%;
+  padding: 10px 14px;
+  background: #272a30;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.select-wrapper select:focus {
+  border-color: #38bdf8;
+}
+
+.mode-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: #272a30;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #9ca3af;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  background: #31353d;
+  color: #ffffff;
+}
+
+.mode-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: #38bdf8;
+  color: #38bdf8;
+  font-weight: 500;
+}
+
+.ctrl-tip {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.state-chip-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.state-chip {
+  font-size: 12px;
+  background: #2a2e36;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #d1d5db;
+}
+
+/* ==========================================================================
+   移动端拟真外框（真机视口模型）
+   ========================================================================== */
+.phone-viewport {
+  width: 375px;
+  height: 760px;
+  background: #000000;
+  border-radius: 46px;
+  padding: 10px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7),
+              0 0 0 1px rgba(255, 255, 255, 0.12),
+              inset 0 0 4px rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-frame {
+  flex: 1;
+  background-color: var(--bg-page);
+  border-radius: 38px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+  height: 40px;
+  padding: 0 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #111827;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  user-select: none;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.battery-indicator {
+  display: flex;
+  align-items: center;
+  border: 1.2px solid #111827;
+  border-radius: 4px;
+  padding: 0 3px;
+  height: 12px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  position: relative;
+}
+
+.battery-indicator::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 3px;
+  width: 1.5px;
+  height: 4px;
+  background: #111827;
+  border-radius: 0 1px 1px 0;
+}
+
+.battery-bolt {
+  font-size: 9px;
+  margin-right: 1px;
+}
+
+/* 顶部导航栏 */
+.nav-bar {
+  height: 44px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  padding: 6px;
+  margin-left: -6px;
+  cursor: pointer;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+
+.btn-back:active {
+  opacity: 0.5;
+}
+
+.nav-title {
+  position: absolute;
+  left: 54px;
+  font-size: 19px;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.3px;
+}
+
+/* 主可滚动区域 */
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 14px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: none;
+}
+
+.scroll-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   设备预览卡片与拟真氛围灯动效渲染
+   ========================================================================== */
+.device-card-container {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 22px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+/* ==========================================================================
+   全新设备展示卡片（DYNAMIC SOUND 发光环模组）与动效
+   ========================================================================== */
+.device-card-container {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.device-mockup-new {
+  position: relative;
+  width: 240px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.device-clean-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.18));
+}
+
+/* 覆盖在 DYNAMIC SOUND 发光环上的动态光效层 */
+.halo-ring-emitter {
+  position: absolute;
+  left: 72.3%;
+  top: 54.0%;
+  width: 28%;
+  height: 36.2%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 动态核心环 */
+.halo-core-ring {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 16px var(--active-halo-color, #00a838);
+  transition: box-shadow 0.3s ease;
+}
+
+/* 外围柔焦发光 */
+.halo-ambient-glow {
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  border-radius: 50%;
+  filter: blur(12px);
+  background: radial-gradient(circle, var(--active-halo-color, #00a838) 0%, transparent 70%);
+  opacity: 0.4;
+  transition: background 0.3s ease;
+}
+
+/* 1. 呼吸动效 (Breathing) */
+.fx-breathing .halo-core-ring {
+  animation: animHaloBreathing 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.fx-breathing .halo-ambient-glow {
+  animation: animGlowBreathing 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes animHaloBreathing {
+  0%, 100% {
+    opacity: 0.15;
+    filter: brightness(0.6);
+    box-shadow: 0 0 4px var(--active-halo-color, #00a838);
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.3);
+    box-shadow: 0 0 24px var(--active-halo-color, #00a838), inset 0 0 8px #ffffff;
+    transform: scale(1.02);
+  }
+}
+
+/* 2. 脉动动效 (Pulsing - 原闪烁升级) */
+.fx-pulsing .halo-core-ring,
+.fx-blinking .halo-core-ring {
+  animation: animHaloPulsing 1.35s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+}
+.fx-pulsing .halo-ambient-glow,
+.fx-blinking .halo-ambient-glow {
+  animation: animGlowPulsing 1.35s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+}
+
+@keyframes animHaloPulsing {
+  0%, 100% {
+    opacity: 0.12;
+    transform: scale(0.96);
+    box-shadow: 0 0 2px var(--active-halo-color, #00a838);
+  }
+  14% {
+    opacity: 0.95;
+    transform: scale(1.03);
+    filter: brightness(1.4);
+    box-shadow: 0 0 26px var(--active-halo-color, #00a838), inset 0 0 8px #ffffff;
+  }
+  26% {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+  42% {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: brightness(1.5);
+    box-shadow: 0 0 32px var(--active-halo-color, #00a838), inset 0 0 10px #ffffff;
+  }
+  65% {
+    opacity: 0.12;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes animGlowPulsing {
+  0%, 100% { opacity: 0.1; transform: scale(0.95); }
+  14% { opacity: 0.6; transform: scale(1.1); }
+  26% { opacity: 0.25; transform: scale(1.0); }
+  42% { opacity: 0.75; transform: scale(1.15); }
+  65% { opacity: 0.1; transform: scale(0.95); }
+}
+
+/* 3. 流光动效 (Streamer - 全环360°点亮，高光顺时针流转，对齐参考图右侧) */
+.fx-streamer .halo-core-ring {
+  background: conic-gradient(
+    from 0deg,
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.18) 0deg,
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.28) 90deg,
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.65) 170deg,
+    var(--active-halo-color, #00a838) 220deg,
+    #ffffff 260deg,
+    var(--active-halo-color, #00a838) 290deg,
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.65) 325deg,
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.18) 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 15px), #fff calc(100% - 14px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 15px), #fff calc(100% - 14px));
+  animation: animHaloRotate 1.5s linear infinite;
+  box-shadow: 0 0 16px var(--active-halo-color, #00a838);
+  opacity: 1;
+}
+.fx-streamer .halo-ambient-glow {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 110deg,
+    var(--active-halo-color, #00a838) 260deg,
+    transparent 360deg
+  );
+  animation: animHaloRotate 1.5s linear infinite;
+  opacity: 0.55;
+  filter: blur(14px);
+}
+
+/* 4. 流水动效 (Water Flow - 约270°高亮弧流速追逐，带90°明显暗区缺口，对齐参考图左侧) */
+.fx-waterflow .halo-core-ring {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 85deg, /* 85度完全暗区，纯黑缺口，与参考图完全一致 */
+    rgba(var(--active-halo-rgb, 0, 168, 56), 0.15) 90deg,
+    var(--active-halo-color, #00a838) 160deg,
+    var(--active-halo-color, #00a838) 310deg,
+    #ffffff 345deg,
+    var(--active-halo-color, #00a838) 355deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 15px), #fff calc(100% - 14px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 15px), #fff calc(100% - 14px));
+  animation: animHaloRotate 1.35s linear infinite;
+  box-shadow: 0 0 20px var(--active-halo-color, #00a838);
+  opacity: 1;
+}
+.fx-waterflow .halo-ambient-glow {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 95deg,
+    var(--active-halo-color, #00a838) 270deg 355deg,
+    transparent 360deg
+  );
+  animation: animHaloRotate 1.35s linear infinite;
+  opacity: 0.65;
+  filter: blur(14px);
+}
+
+/* 5. 彩色律动 (Color Rhythm) */
+.fx-color_rhythm .halo-core-ring {
+  background: conic-gradient(
+    #f43f5e 0deg,
+    #8b5cf6 90deg,
+    #06b6d4 180deg,
+    #10b981 270deg,
+    #f43f5e 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  animation: animHaloRotate 3s linear infinite, animHaloBreathing 1.8s ease-in-out infinite;
+}
+.fx-color_rhythm .halo-ambient-glow {
+  animation: animHaloGlowRotate 3s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes animHaloRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes animHaloGlowRotate {
+  0% { filter: hue-rotate(0deg) blur(12px); }
+  100% { filter: hue-rotate(360deg) blur(12px); }
+}
+
+/* 6. 四色律动 (4-Color Rhythm) */
+.fx-four_color .halo-core-ring {
+  background: conic-gradient(
+    #ef4444 0deg 90deg,
+    #3b82f6 90deg 180deg,
+    #22c55e 180deg 270deg,
+    #eab308 270deg 360deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  animation: animHaloRotate 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
+}
+
+.fx-four_color .halo-ambient-glow {
+  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+  animation: animGlowBreathing 1.8s infinite;
+  opacity: 0.45;
+}
+
+/* 关机/关闭通知时的暗色状态 */
+.fx-off .halo-ring-emitter {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+/* ==========================================================================
+   设置卡片通用样式
+   ========================================================================== */
+.settings-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 38px;
+}
+
+.setting-row.clickable {
+  cursor: pointer;
+}
+
+.setting-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 12px 0;
+}
+
+.setting-label {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.current-effect-hint,
+.current-color-hint {
+  font-size: 13.5px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* iOS/ColorOS 质感开关切换器 */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #e5e7eb;
+  transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider {
+  background-color: #2563eb;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* ==========================================================================
+   全新效果选择器（核心改造：浅色高质感胶囊 + 5大优雅布局形态）
+   ========================================================================== */
+.effect-module-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 胶囊容器带边缘双向羽化渐隐遮罩（滑动左侧或右侧时平滑渐隐，高级无硬切） */
+.capsules-scroller-wrap {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.28s ease;
+}
+
+/* 左侧边缘平滑渐隐遮罩 (滑动时左侧平滑羽化，与右侧保持一致) */
+.capsules-scroller-wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 28px;
+  background: linear-gradient(to right, #ffffff 15%, rgba(255, 255, 255, 0.7) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  border-radius: 12px 0 0 12px;
+}
+
+/* 右侧边缘平滑渐隐遮罩 */
+.capsules-scroller-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  background: linear-gradient(to left, #ffffff 15%, rgba(255, 255, 255, 0.7) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  border-radius: 0 12px 12px 0;
+}
+
+/* 动态感应触发左/右渐隐显隐 */
+.capsules-scroller-wrap.mask-left::before {
+  opacity: 1;
+}
+
+.capsules-scroller-wrap.mask-right::after {
+  opacity: 1;
+}
+
+/* 1. 横向自适应滑动模式 (Scroll Mode - 默认轻量) */
+.layout-scroll .capsules-track {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 6px 2px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.layout-scroll .capsules-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* 2. 2×3 紧凑对称网格模式 (Grid Mode - 均衡对称) */
+.layout-grid .capsules-track {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.layout-grid .capsule-btn {
+  width: 100%;
+  padding: 0 8px;
+}
+
+/* 3. 视觉动态微卡片模式 (Visual Cards 3×2 - 呼应参考图精致磁贴) */
+.layout-cards .capsules-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 4px 0 6px 0;
+}
+
+.layout-cards .capsule-btn {
+  flex-direction: column;
+  height: 72px;
+  padding: 8px 4px 6px 4px;
+  border-radius: 14px;
+  background-color: var(--capsule-bg);
+  border: 1.5px solid transparent;
+  gap: 6px;
+  position: relative;
+  width: 100%;
+}
+
+.layout-cards .capsule-btn .capsule-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.layout-cards .capsule-btn .capsule-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.layout-cards .capsule-btn .capsule-text {
+  font-size: 11.5px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 100%;
+  line-height: 1.15;
+}
+
+.layout-cards .capsule-btn.active {
+  background-color: #ffffff !important;
+  border-color: var(--active-halo-color, #00a838) !important;
+  box-shadow: 0 4px 14px -1px rgba(var(--active-halo-rgb, 0, 168, 56), 0.22), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-1px);
+}
+
+.layout-cards .capsule-btn.active .check-badge {
+  display: flex;
+}
+
+/* 4. iOS 一体化分段槽模式 (iOS Segmented - 极简工业设计) */
+.layout-segmented {
+  background-color: #e9ebf0;
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.layout-segmented .capsules-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.layout-segmented .capsule-btn {
+  height: 38px;
+  padding: 0 4px;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 12px;
+  border: none;
+  color: #475569;
+  width: 100%;
+}
+
+.layout-segmented .capsule-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.layout-segmented .capsule-btn.active {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  border: none !important;
+}
+
+/* 5. 横向大卡聚焦轮播模式 (Focus Carousel - 高端景深轮播) */
+.layout-carousel .capsules-track {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 4px 12px 4px;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.layout-carousel .capsules-track::-webkit-scrollbar {
+  display: none;
+}
+
+.layout-carousel .capsule-btn {
+  flex-direction: column;
+  width: 90px;
+  height: 78px;
+  padding: 10px 6px;
+  border-radius: 16px;
+  background-color: var(--capsule-bg);
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  gap: 6px;
+  position: relative;
+  transition: all 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0.85;
+}
+
+.layout-carousel .capsule-btn .capsule-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.layout-carousel .capsule-btn .capsule-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.layout-carousel .capsule-btn .capsule-text {
+  font-size: 12px;
+  text-align: center;
+}
+
+.layout-carousel .capsule-btn.active {
+  background-color: #ffffff !important;
+  border-color: var(--active-halo-color, #00a838) !important;
+  opacity: 1;
+  transform: scale(1.05);
+  box-shadow: 0 8px 18px -2px rgba(var(--active-halo-rgb, 0, 168, 56), 0.25), 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.layout-carousel .capsule-btn.active .check-badge {
+  display: flex;
+}
+
+/* 选中勾选角标（呼应参考图左下勾选角标，但置于右上角/右下角更利于小卡片查看） */
+.capsule-btn .check-badge {
+  display: none;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--active-halo-color, #00a838);
+  border-radius: 3.5px;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(var(--active-halo-rgb, 0, 168, 56), 0.35);
+  pointer-events: none;
+}
+
+.capsule-btn .check-badge svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* 单个胶囊按钮通用基础样式（浅色底色高质感模式） */
+.capsule-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 13px;
+  background-color: var(--capsule-bg);
+  border: 1.5px solid transparent;
+  border-radius: 9999px;
+  color: var(--capsule-text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.capsule-btn:hover {
+  background-color: var(--capsule-bg-hover);
+  color: #1f2937;
+}
+
+.capsule-btn:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   胶囊选中高亮状态（随选色动态联动描边）
+   ========================================================================== */
+
+/* 核心高亮：描边颜色随【颜色选择】实时动态变化 */
+.capsule-btn.active,
+.active-style-blue .capsule-btn.active,
+.active-style-color .capsule-btn.active {
+  background-color: #ffffff !important;
+  border: 1.5px solid var(--active-halo-color, #00a838) !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 3px 10px -1px rgba(var(--active-halo-rgb, 0, 168, 56), 0.28),
+              0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.2s ease;
+}
+
+/* 兼容保留风格 2：无界白瓷微浮岛 */
+.active-style-island .capsule-btn.active {
+  background-color: #ffffff !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.04) !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.12),
+              0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 兼容保留风格 3：通透水光浅色底 */
+.active-style-soft .capsule-btn.active {
+  background-color: #eff6ff !important;
+  border: 1.5px solid var(--active-halo-color, #00a838) !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(var(--active-halo-rgb, 0, 168, 56), 0.2) !important;
+}
+
+/* 胶囊内的小图标 */
+.capsule-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.capsule-icon svg {
+  width: 17px;
+  height: 17px;
+  transition: transform 0.22s ease, filter 0.22s ease, opacity 0.22s ease;
+  opacity: 0.88;
+}
+
+.capsule-btn:hover .capsule-icon svg,
+.capsule-btn.active .capsule-icon svg {
+  opacity: 1;
+  transform: scale(1.08);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
+}
+
+.capsule-text {
+  letter-spacing: -0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   全新颜色选择模块（5个快捷色 + 全彩拾色大圆盘）
+   ========================================================================== */
+.color-presets-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 6px 12px 6px;
+}
+
+.color-circle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+  position: relative;
+  border: 1.8px solid transparent;
+}
+
+.color-circle-btn:active {
+  transform: scale(0.9);
+}
+
+.color-circle-btn .swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s;
+}
+
+/* 选中高亮外圈环（外扩同色光环） */
+.color-circle-btn.active {
+  border-color: var(--selected-preset-ring, #00a838);
+}
+
+.color-circle-btn.active .swatch {
+  transform: scale(0.85);
+}
+
+/* 全彩拾色大圆盘 */
+.color-wheel-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 6px 0;
+}
+
+.color-wheel-box {
+  position: relative;
+  width: 175px;
+  height: 175px;
+  border-radius: 50%;
+  cursor: crosshair;
+  user-select: none;
+  touch-action: none;
+}
+
+.wheel-hd-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+/* 取色圆环指针把手 (Thumb) */
+.wheel-picker-thumb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transition: transform 0.08s ease;
+}
+
+.thumb-core {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+
+/* ==========================================================================
+   底部安全指示条
+   ========================================================================== */
+.home-indicator {
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-page);
+}
+
+.home-indicator .bar {
+  width: 124px;
+  height: 4px;
+  background: #111827;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   响应式断点适配
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: 0;
+    background-color: #000;
+    flex-direction: column;
+    align-items: center;
+  }
+  .demo-controller {
+    width: 100%;
+    max-width: 375px;
+    padding: 12px;
+  }
+  .phone-viewport {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .phone-frame {
+    border-radius: 0;
+  }
+}

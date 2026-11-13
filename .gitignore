@@ -1,0 +1,12 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp scripts & outputs
+*.py
+temp_*.html
+*.log
+
+# Root screenshot artifacts (preserve assets folder)
+/*.png
+!/assets/
