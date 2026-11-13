@@ -271,25 +271,29 @@ body {
 }
 
 /* ==========================================================================
-   全新视觉：原生胶囊 5 档亮度滑块 (蓝白胶囊与 5 档吸附)
+   全新视觉：原生胶囊 5 档亮度滑块 (1:1对齐参考图规范)
    ========================================================================== */
-.brightness-control-row {
-  padding: 16px 0 18px 0;
+.card-group-title {
+  font-size: 13px;
+  color: #8e8f91;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  padding: 0 18px;
+  margin: 12px 0 8px 0;
 }
 
-.brightness-control-row .setting-label {
-  display: block;
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--text-main, #181818);
-  margin-bottom: 14px;
-  letter-spacing: -0.2px;
+.brightness-control-row {
+  display: flex;
+  align-items: center;
+  min-height: 68px;
+  padding: 0;
+  width: 100%;
 }
 
 .brightness-pill-slider-box {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   width: 100%;
 }
 
@@ -297,7 +301,7 @@ body {
   background: none;
   border: none;
   padding: 0;
-  color: #555962;
+  color: #757575;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -307,19 +311,21 @@ body {
 }
 
 .sun-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
   opacity: 0.7;
 }
 
 .pill-slider-track-wrap {
   flex: 1;
-  height: 28px;
+  height: 24px;
   position: relative;
   display: flex;
   align-items: center;
-  background-color: #e5e7eb;
+  background-color: #f0f0f0;
   border-radius: 9999px;
   overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
 }
 
 .slider-fill-line {
@@ -327,97 +333,45 @@ body {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 0;
-  background: #3579f6;
+  width: 80%;
+  min-width: 24px;
+  background-color: #0480fe;
   border-radius: 9999px;
   pointer-events: none;
   z-index: 1;
-}
-
-.track-gear-dots {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  height: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  pointer-events: none;
-  z-index: 2;
+  justify-content: flex-end;
+  padding-right: 6px;
+  box-sizing: border-box;
+  transition: width 0.2s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-.gear-dot {
-  width: 7px;
-  height: 7px;
+.slider-thumb-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background-color: #c6c9ce;
-  transition: background-color 0.15s ease, opacity 0.15s ease;
-}
-
-.gear-dot.in-active {
-  background-color: rgba(255, 255, 255, 0.55);
-}
-
-.gear-dot.under-thumb {
-  opacity: 0;
+  background-color: #ffffff;
+  flex-shrink: 0;
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
 .pill-range-slider {
   -webkit-appearance: none;
   appearance: none;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: 28px;
-  border-radius: 9999px;
-  background: transparent;
-  outline: none;
+  height: 100%;
+  opacity: 0;
   cursor: pointer;
   margin: 0;
   padding: 0;
-  position: relative;
-  z-index: 3;
+  z-index: 5;
   border: none;
-}
-
-.pill-range-slider::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
   background: transparent;
-  border: none;
-  height: 100%;
-}
-
-.pill-range-slider::-moz-range-track {
-  background: transparent;
-  border: none;
-  height: 100%;
-}
-
-/* Chrome / Safari / Edge Thumb */
-.pill-range-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
-  cursor: grab;
-  transition: transform 0.1s ease;
-}
-
-.pill-range-slider::-webkit-slider-thumb:active {
-  cursor: grabbing;
-  transform: scale(1.06);
-}
-
-/* Firefox Thumb */
-.pill-range-slider::-moz-range-thumb {
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.22);
-  cursor: grab;
 }
 
 /* 列表行右侧元数据与状态 */
@@ -734,6 +688,8 @@ body {
 
 /* 当幻彩脉动总开关关闭时：其他地方都置灰，禁用交互 */
 #view_home.master-off #masterControlledContent,
+#view_home.master-off #title_brightness,
+#view_home.master-off #card_brightness,
 #view_home.master-off #card_scenes_list {
   opacity: 0.36;
   filter: grayscale(0.7);

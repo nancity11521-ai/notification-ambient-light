@@ -79,7 +79,7 @@
         </section>
         <div class="sub-hint-text" data-i18n="magic_pulse_hint">在低电量、省电模式、勿扰模式、睡眠模式下幻彩脉动功能不可用</div>
 
-        <!-- 主控卡片：总开关、启用时段、亮度调节 -->
+        <!-- 主控卡片：总开关、启用时段 -->
         <section class="settings-card" id="card_master">
           <div class="setting-row">
             <span class="setting-label" data-i18n="magic_pulse_switch">幻彩脉动</span>
@@ -99,49 +99,46 @@
                 </svg>
               </div>
             </div>
-            <div class="setting-divider"></div>
-            <!-- 亮度：原生胶囊滑块 5 档设计 (20%, 40%, 60%, 80%, 100%) -->
-            <div class="brightness-control-row">
-              <div class="setting-label" data-i18n="brightness">亮度</div>
-              <div class="brightness-pill-slider-box">
-                <button type="button" class="sun-btn sun-btn-left" onclick="setBrightnessGear(20)" aria-label="1档 (20%)" title="最低亮度">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
-                    <line x1="12" y1="2" x2="12" y2="4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="12" y1="19.5" x2="12" y2="22" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="4.93" y1="4.93" x2="6.7" y2="6.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="17.3" y1="17.3" x2="19.07" y2="19.07" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="2" y1="12" x2="4.5" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="19.5" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="4.93" y1="19.07" x2="6.7" y2="17.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    <line x1="17.3" y1="6.7" x2="19.07" y2="4.93" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                  </svg>
-                </button>
-                <div class="pill-slider-track-wrap" id="pillSliderTrackWrap">
-                  <div class="slider-fill-line" id="sliderFillLine"></div>
-                  <div class="track-gear-dots">
-                    <span class="gear-dot in-active" data-gear="20"></span>
-                    <span class="gear-dot in-active" data-gear="40"></span>
-                    <span class="gear-dot in-active" data-gear="60"></span>
-                    <span class="gear-dot under-thumb" data-gear="80"></span>
-                    <span class="gear-dot" data-gear="100"></span>
-                  </div>
-                  <input type="range" min="20" max="100" step="1" value="80" class="pill-range-slider" id="homeBrightnessSlider" oninput="handleBrightnessInput(this.value)" onchange="handleBrightnessChange(this.value)">
+          </div>
+        </section>
+
+        <!-- 亮度分组标题与卡片 (1:1对齐参考图规范) -->
+        <div class="card-group-title" id="title_brightness" data-i18n="brightness">亮度</div>
+        <section class="settings-card" id="card_brightness">
+          <div class="brightness-control-row">
+            <div class="brightness-pill-slider-box">
+              <button type="button" class="sun-btn sun-btn-left" onclick="setBrightnessGear(20)" aria-label="1档 (20%)" title="最低亮度">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="3.8" fill="currentColor"/>
+                  <line x1="12" y1="2.2" x2="12" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="12" y1="19" x2="12" y2="21.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="2.2" y1="12" x2="5" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="19" y1="12" x2="21.8" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="5.1" y1="5.1" x2="7.1" y2="7.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16.9" y1="16.9" x2="18.9" y2="18.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="5.1" y1="18.9" x2="7.1" y2="16.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="16.9" y1="7.1" x2="18.9" y2="5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="pill-slider-track-wrap" id="pillSliderTrackWrap">
+                <div class="slider-fill-line" id="sliderFillLine">
+                  <span class="slider-thumb-dot" id="sliderThumbDot"></span>
                 </div>
-                <button type="button" class="sun-btn sun-btn-right" onclick="setBrightnessGear(100)" aria-label="5档 (100%)" title="最高亮度">
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="5.2" fill="currentColor"/>
-                    <line x1="12" y1="1" x2="12" y2="4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="12" y1="20" x2="12" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="1" y1="12" x2="4" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="20" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                  </svg>
-                </button>
+                <input type="range" min="20" max="100" step="1" value="80" class="pill-range-slider" id="homeBrightnessSlider" oninput="handleBrightnessInput(this.value)" onchange="handleBrightnessChange(this.value)">
               </div>
+              <button type="button" class="sun-btn sun-btn-right" onclick="setBrightnessGear(100)" aria-label="5档 (100%)" title="最高亮度">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="5" fill="currentColor"/>
+                  <line x1="12" y1="1.8" x2="12" y2="4.8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="12" y1="19.2" x2="12" y2="22.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="1.8" y1="12" x2="4.8" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="19.2" y1="12" x2="22.2" y2="12" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="4.8" y1="4.8" x2="6.9" y2="6.9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="17.1" y1="17.1" x2="19.2" y2="19.2" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="4.8" y1="19.2" x2="6.9" y2="17.1" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                  <line x1="17.1" y1="6.9" x2="19.2" y2="4.8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+                </svg>
+              </button>
             </div>
           </div>
         </section>

@@ -866,6 +866,11 @@ function handleBrightnessInput(val) {
   const num = parseFloat(val);
   state.globalBrightness = Math.round(num);
 
+  const fillLine = document.getElementById('sliderFillLine');
+  if (fillLine) {
+    fillLine.style.transition = 'none';
+  }
+
   updateSliderTrackLine(num);
   applyHaloBrightness(num);
   updateStatusChips();
@@ -877,11 +882,17 @@ function handleBrightnessInput(val) {
 function handleBrightnessChange(val) {
   const num = parseFloat(val);
   const nearest = Math.max(20, Math.min(100, Math.round(num / 20) * 20));
+
+  const fillLine = document.getElementById('sliderFillLine');
+  if (fillLine) {
+    fillLine.style.transition = 'width 0.2s cubic-bezier(0.2, 0, 0.2, 1)';
+  }
+
   setBrightnessGear(nearest);
 }
 
 /**
- * 档位设定（点击 5 档点、太阳图标或吸附归位）
+ * 档位设定（点击太阳图标或吸附归位）
  */
 function setBrightnessGear(val) {
   const num = Math.max(20, Math.min(100, parseInt(val, 10)));
@@ -890,6 +901,11 @@ function setBrightnessGear(val) {
   const slider = document.getElementById('homeBrightnessSlider');
   if (slider) {
     slider.value = num;
+  }
+
+  const fillLine = document.getElementById('sliderFillLine');
+  if (fillLine) {
+    fillLine.style.transition = 'width 0.2s cubic-bezier(0.2, 0, 0.2, 1)';
   }
 
   updateSliderTrackLine(num);
@@ -902,7 +918,7 @@ function setGlobalBrightness(val) {
 }
 
 /**
- * 更新胶囊滑块蓝色填充线条与圆点状态
+ * 更新胶囊滑块蓝色填充线条与圆点状态 (1:1对齐参考图：同心圆钮嵌入蓝色端头)
  */
 function updateSliderTrackLine(val) {
   const num = parseFloat(val);
@@ -910,17 +926,10 @@ function updateSliderTrackLine(val) {
 
   const fillLine = document.getElementById('sliderFillLine');
   if (fillLine) {
-    // 拇指圆点直径 28px，中心距左端为 14px，至右端最大为 100% - 14px
-    fillLine.style.width = `calc(14px + (100% - 28px) * ${ratio})`;
+    // 胶囊高度 24px，圆角半径 12px；白色圆钮直径 12px，两边内边距 6px
+    // 最小宽度为 24px (20% 档)，最大为 100% (100% 档)
+    fillLine.style.width = `calc(24px + (100% - 24px) * ${ratio})`;
   }
-
-  // 更新胶囊内的 5 个档位圆点状态
-  document.querySelectorAll('.gear-dot').forEach(dot => {
-    const g = parseInt(dot.getAttribute('data-gear'), 10);
-    const distToThumb = Math.abs(g - num);
-    dot.classList.toggle('in-active', g < num);
-    dot.classList.toggle('under-thumb', distToThumb <= 7);
-  });
 }
 
 /**
