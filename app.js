@@ -42,7 +42,7 @@ const I18N_LOCALES = {
     charging_duration: '充电时间显示时长',
     charging_duration_15s: '15秒',
     battery_adaptive: '根据电池电量变化',
-    in_call_breathing: '通话中呼吸'
+    in_call_breathing: '通话中呼吸',
     page_active_time: '启用时段',
     active_time_scheduled: '定时启用',
     time_start: '开始',
@@ -86,7 +86,7 @@ const I18N_LOCALES = {
     charging_duration: 'Charging Display Duration',
     charging_duration_15s: '15s',
     battery_adaptive: 'Adaptive to Battery Level',
-    in_call_breathing: 'Breathe During Call'
+    in_call_breathing: 'Breathe During Call',
     page_active_time: 'Active Schedule',
     active_time_scheduled: 'Scheduled',
     time_start: 'Start',
@@ -130,7 +130,7 @@ const I18N_LOCALES = {
     charging_duration: 'Ladeanzeigedauer',
     charging_duration_15s: '15 Sek.',
     battery_adaptive: 'Akkustand-abhängig',
-    in_call_breathing: 'Atmen während Anruf'
+    in_call_breathing: 'Atmen während Anruf',
     page_active_time: 'Aktivierungszeitraum',
     active_time_scheduled: 'Zeitgesteuert',
     time_start: 'Start',
@@ -174,7 +174,7 @@ const I18N_LOCALES = {
     charging_duration: 'Duración de pantalla de carga',
     charging_duration_15s: '15 s',
     battery_adaptive: 'Cambiar según nivel de batería',
-    in_call_breathing: 'Respiración en llamada'
+    in_call_breathing: 'Respiración en llamada',
     page_active_time: 'Horario de activación',
     active_time_scheduled: 'Programado',
     time_start: 'Inicio',
@@ -218,7 +218,7 @@ const I18N_LOCALES = {
     charging_duration: 'Время отображения зарядки',
     charging_duration_15s: '15 сек',
     battery_adaptive: 'Изменение по уровню заряда',
-    in_call_breathing: 'Дыхание во время вызова'
+    in_call_breathing: 'Дыхание во время вызова',
     page_active_time: 'Период активности',
     active_time_scheduled: 'По расписанию',
     time_start: 'Начало',
@@ -262,8 +262,8 @@ const I18N_LOCALES = {
     charging_duration: 'Durée d’affichage de charge',
     charging_duration_15s: '15 s',
     battery_adaptive: 'Adapter selon niveau de batterie',
-    in_call_breathing: 'Respiration pendant l’appel'
-    page_active_time: 'Période d'activation',
+    in_call_breathing: 'Respiration pendant l’appel',
+    page_active_time: "Période d'activation",
     active_time_scheduled: 'Planifié',
     time_start: 'Début',
     time_end: 'Fin',
@@ -306,7 +306,7 @@ const I18N_LOCALES = {
     charging_duration: '充電表示時間',
     charging_duration_15s: '15秒',
     battery_adaptive: 'バッテリー残量に連動',
-    in_call_breathing: '通話中呼吸'
+    in_call_breathing: '通話中呼吸',
     page_active_time: '有効時間帯',
     active_time_scheduled: 'スケジュール有効',
     time_start: '開始',
@@ -381,6 +381,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (params.has('page') && state.scenes[params.get('page')]) {
     state.currentPage = params.get('page');
+  }
+
+  if (params.has('brightness')) {
+    const b = parseInt(params.get('brightness'), 10);
+    if (!isNaN(b) && b >= 20 && b <= 100) {
+      state.globalBrightness = b;
+    }
   }
 
   // 初始化各场景的动效和颜色
@@ -785,34 +792,96 @@ function toggleBatteryAdaptive(checked) {
 }
 
 /**
- * 全局亮度调节
+ * 全局亮度调节（线条实时跟随 + 顶部灯光亮度和光晕毫秒级实时驱动）
+ */
+function handleBrightnessInput(val) {
+  const num = parseFloat(val);
+  state.globalBrightness = Math.round(num);
+
+  updateSliderTrackLine(num);
+  applyHaloBrightness(num);
+  updateStatusChips();
+}
+
+/**
+ * 释放滑块时吸附到最近的 5 档档位 (20%, 40%, 60%, 80%, 100%)
+ */
+function handleBrightnessChange(val) {
+  const num = parseFloat(val);
+  const nearest = Math.max(20, Math.min(100, Math.round(num / 20) * 20));
+  setBrightnessGear(nearest);
+}
+
+/**
+ * 档位设定（点击 5 档点、太阳图标或吸附归位）
  */
 function setBrightnessGear(val) {
-  const num = parseInt(val, 10);
+  const num = Math.max(20, Math.min(100, parseInt(val, 10)));
   state.globalBrightness = num;
 
   const slider = document.getElementById('homeBrightnessSlider');
   if (slider) {
     slider.value = num;
-    const pct = ((num - 20) / 80) * 100;
-    slider.style.background = `linear-gradient(to right, #3579f6 0%, #3579f6 ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`;
   }
 
-  // 更新胶囊内的 5 个档位圆点状态
-  document.querySelectorAll('.gear-dot').forEach(dot => {
-    const g = parseInt(dot.getAttribute('data-gear'), 10);
-    dot.classList.toggle('in-active', g < num);
-    dot.classList.toggle('under-thumb', g === num);
-  });
-
-  document.documentElement.style.setProperty('--device-halo-brightness', num / 100);
-  document.documentElement.style.setProperty('--brightness-pct', `${num}%`);
-
+  updateSliderTrackLine(num);
+  applyHaloBrightness(num);
   updateStatusChips();
 }
 
 function setGlobalBrightness(val) {
   setBrightnessGear(val);
+}
+
+/**
+ * 更新胶囊滑块蓝色填充线条与圆点状态
+ */
+function updateSliderTrackLine(val) {
+  const num = parseFloat(val);
+  const ratio = Math.max(0, Math.min(1, (num - 20) / 80));
+
+  const fillLine = document.getElementById('sliderFillLine');
+  if (fillLine) {
+    // 拇指圆点直径 28px，中心距左端为 14px，至右端最大为 100% - 14px
+    fillLine.style.width = `calc(14px + (100% - 28px) * ${ratio})`;
+  }
+
+  // 更新胶囊内的 5 个档位圆点状态
+  document.querySelectorAll('.gear-dot').forEach(dot => {
+    const g = parseInt(dot.getAttribute('data-gear'), 10);
+    const distToThumb = Math.abs(g - num);
+    dot.classList.toggle('in-active', g < num);
+    dot.classList.toggle('under-thumb', distToThumb <= 7);
+  });
+}
+
+/**
+ * 驱动顶部发光环真实灯光亮度和范围跟随调节
+ */
+function applyHaloBrightness(num) {
+  const factor = Math.max(0, Math.min(1, (num - 20) / 80)); // 0.0 ~ 1.0
+
+  // 视觉参数阶梯：20% 时微弱柔暗，100% 时高亮炫目漫射
+  const brightnessVal = (0.32 + factor * 0.88).toFixed(3); // 0.32 ~ 1.20
+  const opacityVal = (0.22 + factor * 0.78).toFixed(3);    // 0.22 ~ 1.00
+  const glowScaleVal = (0.65 + factor * 0.55).toFixed(3);  // 0.65 ~ 1.20
+  const glowOpacity = (0.20 + factor * 0.80).toFixed(3);   // 0.20 ~ 1.00
+
+  document.documentElement.style.setProperty('--device-halo-brightness', brightnessVal);
+  document.documentElement.style.setProperty('--device-halo-opacity', opacityVal);
+  document.documentElement.style.setProperty('--device-halo-glow-scale', glowScaleVal);
+  document.documentElement.style.setProperty('--brightness-pct', `${Math.round(num)}%`);
+
+  // 直接驱动所有场景的 emitter 与 ambient glow
+  document.querySelectorAll('.halo-ring-emitter').forEach(emitter => {
+    emitter.style.opacity = opacityVal;
+    emitter.style.filter = `brightness(${brightnessVal})`;
+  });
+
+  document.querySelectorAll('.halo-ambient-glow').forEach(glow => {
+    glow.style.transform = `scale(${glowScaleVal})`;
+    glow.style.opacity = glowOpacity;
+  });
 }
 
 /**

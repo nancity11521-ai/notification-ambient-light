@@ -316,12 +316,27 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.slider-fill-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: #3579f6;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .track-gear-dots {
   position: absolute;
-  left: 12px;
-  right: 12px;
+  left: 14px;
+  right: 14px;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -335,11 +350,11 @@ body {
   height: 7px;
   border-radius: 50%;
   background-color: #c6c9ce;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
 .gear-dot.in-active {
-  background-color: rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.55);
 }
 
 .gear-dot.under-thumb {
@@ -352,7 +367,7 @@ body {
   width: 100%;
   height: 28px;
   border-radius: 9999px;
-  background: linear-gradient(to right, #3579f6 0%, #3579f6 75%, #e5e7eb 75%, #e5e7eb 100%);
+  background: transparent;
   outline: none;
   cursor: pointer;
   margin: 0;
@@ -360,6 +375,19 @@ body {
   position: relative;
   z-index: 3;
   border: none;
+}
+
+.pill-range-slider::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  height: 100%;
+}
+
+.pill-range-slider::-moz-range-track {
+  background: transparent;
+  border: none;
+  height: 100%;
 }
 
 /* Chrome / Safari / Edge Thumb */
@@ -377,7 +405,7 @@ body {
 
 .pill-range-slider::-webkit-slider-thumb:active {
   cursor: grabbing;
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 /* Firefox Thumb */
@@ -488,8 +516,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: var(--device-halo-opacity, 0.85);
   filter: brightness(var(--device-halo-brightness, 1));
-  transition: filter 0.2s ease, opacity 0.25s ease;
+  transition: opacity 0.1s ease, filter 0.1s ease;
 }
 
 /* 动态核心环 */
@@ -511,8 +540,9 @@ body {
   border-radius: 50%;
   filter: blur(12px);
   background: radial-gradient(circle, var(--active-halo-color, #00a838) 0%, transparent 70%);
-  opacity: 0.4;
-  transition: background 0.3s ease;
+  opacity: calc(var(--device-halo-opacity, 0.85) * 0.65);
+  transform: scale(var(--device-halo-glow-scale, 1));
+  transition: background 0.3s ease, opacity 0.1s ease, transform 0.1s ease;
 }
 
 /* 1. 呼吸动效 (Breathing) */
