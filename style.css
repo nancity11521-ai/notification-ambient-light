@@ -430,10 +430,10 @@ body {
 .device-card-container {
   background: var(--card-bg, #ffffff);
   border-radius: 18px;
-  padding: 10px 14px 0 14px;
+  padding: 16px 14px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   overflow: hidden;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 }
@@ -444,7 +444,7 @@ body {
   max-width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .device-clean-img {
@@ -479,7 +479,6 @@ body {
   height: 100%;
   border-radius: 50%;
   position: absolute;
-  mix-blend-mode: screen;
   box-shadow: 0 0 16px var(--active-halo-color, #00a838);
   transition: box-shadow 0.3s ease;
 }
@@ -499,71 +498,92 @@ body {
 
 /* 1. 呼吸动效 (Breathing) */
 .fx-breathing .halo-core-ring {
+  background-color: var(--active-halo-color, #00e600);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  box-shadow: 0 0 18px var(--active-halo-color, #00e600);
   animation: animHaloBreathing 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 .fx-breathing .halo-ambient-glow {
+  background: radial-gradient(circle, var(--active-halo-color, #00e600) 0%, transparent 70%);
   animation: animGlowBreathing 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes animHaloBreathing {
   0%, 100% {
-    opacity: 0.15;
-    filter: brightness(0.6);
-    box-shadow: 0 0 4px var(--active-halo-color, #00a838);
-    transform: scale(0.96);
+    opacity: 0.38;
+    filter: brightness(0.85);
+    box-shadow: 0 0 8px var(--active-halo-color, #00e600);
+    transform: scale(0.98);
   }
   50% {
     opacity: 1;
-    filter: brightness(1.3);
-    box-shadow: 0 0 24px var(--active-halo-color, #00a838), inset 0 0 8px #ffffff;
+    filter: brightness(1.25);
+    box-shadow: 0 0 26px var(--active-halo-color, #00e600);
     transform: scale(1.02);
+  }
+}
+
+@keyframes animGlowBreathing {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.15);
   }
 }
 
 /* 2. 脉动动效 (Pulsing - 原闪烁升级) */
 .fx-pulsing .halo-core-ring,
 .fx-blinking .halo-core-ring {
+  background-color: var(--active-halo-color, #00e600);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 14px), #fff calc(100% - 13px));
+  box-shadow: 0 0 18px var(--active-halo-color, #00e600);
   animation: animHaloPulsing 1.35s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
 }
 .fx-pulsing .halo-ambient-glow,
 .fx-blinking .halo-ambient-glow {
+  background: radial-gradient(circle, var(--active-halo-color, #00e600) 0%, transparent 70%);
   animation: animGlowPulsing 1.35s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
 }
 
 @keyframes animHaloPulsing {
   0%, 100% {
-    opacity: 0.12;
-    transform: scale(0.96);
-    box-shadow: 0 0 2px var(--active-halo-color, #00a838);
+    opacity: 0.3;
+    transform: scale(0.97);
+    box-shadow: 0 0 6px var(--active-halo-color, #00e600);
   }
-  14% {
-    opacity: 0.95;
+  16% {
+    opacity: 0.98;
     transform: scale(1.03);
-    filter: brightness(1.4);
-    box-shadow: 0 0 26px var(--active-halo-color, #00a838), inset 0 0 8px #ffffff;
+    filter: brightness(1.3);
+    box-shadow: 0 0 26px var(--active-halo-color, #00e600);
   }
-  26% {
-    opacity: 0.35;
-    transform: scale(0.98);
+  30% {
+    opacity: 0.45;
+    transform: scale(0.99);
   }
-  42% {
+  46% {
     opacity: 1;
-    transform: scale(1.05);
-    filter: brightness(1.5);
-    box-shadow: 0 0 32px var(--active-halo-color, #00a838), inset 0 0 10px #ffffff;
+    transform: scale(1.04);
+    filter: brightness(1.35);
+    box-shadow: 0 0 28px var(--active-halo-color, #00e600);
   }
-  65% {
-    opacity: 0.12;
-    transform: scale(0.96);
+  68% {
+    opacity: 0.3;
+    transform: scale(0.97);
   }
 }
 
 @keyframes animGlowPulsing {
-  0%, 100% { opacity: 0.1; transform: scale(0.95); }
-  14% { opacity: 0.6; transform: scale(1.1); }
-  26% { opacity: 0.25; transform: scale(1.0); }
-  42% { opacity: 0.75; transform: scale(1.15); }
-  65% { opacity: 0.1; transform: scale(0.95); }
+  0%, 100% { opacity: 0.2; transform: scale(0.92); }
+  16% { opacity: 0.7; transform: scale(1.12); }
+  30% { opacity: 0.35; transform: scale(1.0); }
+  46% { opacity: 0.8; transform: scale(1.16); }
+  68% { opacity: 0.2; transform: scale(0.92); }
 }
 
 /* 3. 流光动效 (Streamer - 全环360°点亮，高光顺时针流转，对齐参考图右侧) */
@@ -641,8 +661,16 @@ body {
   animation: animHaloRotate 3s linear infinite, animHaloBreathing 1.8s ease-in-out infinite;
 }
 .fx-color_rhythm .halo-ambient-glow {
+  background: conic-gradient(
+    #f43f5e 0deg,
+    #8b5cf6 90deg,
+    #06b6d4 180deg,
+    #10b981 270deg,
+    #f43f5e 360deg
+  );
   animation: animHaloGlowRotate 3s linear infinite;
-  opacity: 0.5;
+  opacity: 0.55;
+  filter: blur(14px);
 }
 
 @keyframes animHaloRotate {
