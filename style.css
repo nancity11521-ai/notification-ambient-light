@@ -341,11 +341,29 @@ body {
   margin: 12px 0 8px 0;
 }
 
+.brightness-card-section {
+  padding-top: 14px;
+  padding-bottom: 16px;
+}
+
+.brightness-label-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.brightness-label-row .setting-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-main, #181818);
+  letter-spacing: -0.2px;
+}
+
 .brightness-control-row {
   display: flex;
   align-items: center;
-  min-height: 52px;
-  padding: 4px 0;
+  min-height: 44px;
+  padding: 0;
   width: 100%;
 }
 
