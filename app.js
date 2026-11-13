@@ -841,11 +841,14 @@ function toggleSceneSwitch(sceneId, checked) {
 
   // 更新当前页面设备环状态
   const mockup = document.getElementById(`mockup_${sceneId}`);
+  const mockupImg = mockup ? mockup.querySelector('.device-clean-img') : null;
   if (mockup) {
     if (!checked) {
       mockup.classList.add('fx-off');
+      if (mockupImg) mockupImg.src = './assets/device_clean_off.png';
     } else {
       mockup.classList.remove('fx-off');
+      if (mockupImg) mockupImg.src = './assets/device_clean.png';
       applySceneEffectToMockup(sceneId, scData.effect);
     }
   }
