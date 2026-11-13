@@ -285,8 +285,8 @@ body {
 .brightness-control-row {
   display: flex;
   align-items: center;
-  min-height: 68px;
-  padding: 0;
+  min-height: 52px;
+  padding: 4px 0;
   width: 100%;
 }
 
@@ -967,8 +967,6 @@ body {
 
 /* 当幻彩脉动总开关关闭时：其他地方都置灰，禁用交互 */
 #view_home.master-off #masterControlledContent,
-#view_home.master-off #title_brightness,
-#view_home.master-off #card_brightness,
 #view_home.master-off #card_scenes_list {
   opacity: 0.36;
   filter: grayscale(0.7);
